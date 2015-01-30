@@ -1,0 +1,26 @@
+________
+
+HASH TABLES...
+________
+
+	IN JS, you don't have access to strict arrays like you do in C. We need to simulate this in JS as follows:
+
+		function Hash () {
+			this.numBuckets = 25;		// We'll use this to sim the array size
+			this.buckets = [];			// Initialized array
+		}
+
+	typeof returns a string, which is why we put the checked item in quotes:
+		>>For ex: alternatively you could check (key.constructor !== String) to check key is built from the String class.
+
+	Note: Install ack for code searching
+
+	Why do we 'AddToHead' of the linked list instead of AddToTail? The principle used here is recency; that there's a better chance the latest inserted data will be needed sooner. If you place it at the end, you're almost guaranteeing a longer O(n) runtime.
+
+	Hash.prototype.get... You shouldn't consider 'search' a method that you can change. How can we otherwise extract the 'key' from the HashNode without modifying Linked List search?
+
+		Nimit's Aside: By modifying .valueOf(), we can hack the '===' check to return the value of the HashNode instead of the entire HashNode object. Out of the box, when comparing objects, using '==' or '===' utilizes the Object.prototype.valueOf() method.
+
+		BTW: Shutting down node/console will reset primitives to their native state. 
+
+	

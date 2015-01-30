@@ -1,0 +1,206 @@
+Notes 17 Jan 2015
+
+Test_First_JS Review Session
+
+________
+
+Hello.....
+________
+
+	The only important thing to note here is that console.log fails the spec because using it outputs the answer to the console but not necessarily to the test spec environment? (That's your best guess.). Use 'return' only to get the answer out.
+
+________
+
+Properties.....
+________
+
+	first test script - make sure you're setting the property on the object being passed in.
+	Passing in the object allows you to change it, but 
+
+	>>Objects are passed as references... Objects are 'heavier' i.e. they are not copied around. You are pointed back to the object in memory.
+	>>Primitives are passed as values. Unless you wrap this in an object, it's passed as a value.
+
+	JS has pointers/references like other languages but it is not as explicit as other languages.
+	Literal and indirect object notation perform a two step process > find object > set value
+
+	"y": Array Notation: Useful when you have spaces in your names
+	Array notation also allows you to perform evaluations within those brackets i.e. object[getVal(key)];
+
+	Dot notation is cleaner for hardcoding something into a property of an object.
+
+	Functions...are Also Objects therefore they are also passed by reference. They are first-class objects.
+________
+
+Loops...
+________
+
+	String concatenation options:
+							What is it Doing?					Cost?
+		1. += 				builds a new string every time		more expensive
+		2. .join() method: 	Push strings into an Array  		less expensive, only creates new array at the end
+
+		#2 is Preferred.
+
+		Note: there are some minute performance differences between loops
+		Note: REMEMBER if you're filling an empty string (just like an array)  you should initialize the variable to be an empty string, ie:
+			// concatWord = ""
+
+	When possible, store the array iterator to a variable so you are not checking lenght on every cycle.
+
+		for(var i = 0, len = arr.length; i < len; i++) {}
+
+	Built in functions are almost always a little bit faster than even the fastest comparable function you can write:
+		The build in function is built into binary/assembly much quicker; Your code needs to be interpreted.
+
+	Takeway --> A word is concatenated on every round; an if/branch is needed only when both delim = true (it's defined) AND you're not on the last loop of the array.
+
+	SUM();
+
+		Useful to use while loop in the instance you know the length of the array. This is faster to execute
+
+			var i = arr.length, sum = 0;
+
+			while (i--) {					<< when this hits zero, it turns to false
+				sum += arr[i]
+			}
+
+
+	PARAMIFY (); << This is important becuase it's how you pass data to a URL!!
+
+		This is used in conjunction with a GET request for public sites since you can bookmark it (save it and reuse it)
+		The hidden request is a POST request. This is meant to hide data (passwords, messages, etc.).
+
+
+		When looping through objects >> For/In loops
+
+		>There is a downside to adding the delimiter outside of the first loop, we have to loop through the data twice. But it makes it easier to sort the parameters after the fact.
+
+		>IN some security schemes, you need to pass the hash sorted and encrypted in order to navigate the rules. Sorting it helps ensure both people are evaluating the same checksum. Useful for API security.
+
+	FACTORIAL (): What about writing it recursively?
+
+		> We need a base case: It should be calculable without recursion
+		> Base Case: if (n === 0) {return 1;}
+		> You should write any recursive function, as if that recursive function already exists:  >> return n* factorial(n-1) <<
+
+		^^ This is tail-recursion. The last call in the function is a recursive call. Smart compilers can convert it into a loop easily. JS is not good at this yet.
+		There's no hard-set rule as to why recursion or looping will be faster than one another. It depends on the algorithm. 
+
+
+		> If you're using a loop it's important to declare the iterating variable in a for loop that's within the for function
+			recursion;
+				for(var = i; i < len; i++)
+					^^^ if you don't declare var here, you may be altering your global i during recursive calls.
+
+		Every function has a 'magic' variable which is a list call arguments. You can access it via bracket method [i] but you can't use array methods on it.
+			^^Note: You can call arguments w/o it having to be a parameter; it's available anywhere in the function as is.
+
+		Slice is a way to make copies of arrays as follows
+			var argumentarray = [].slice.call(arguments, 0)
+										 ^^^ by default slice method assumes 'this' is the calling array. This is a hack to abuse the slice method, that is not available on 'argument' which is a list...not an array!
+										 				^^^ Zero tells slice to return all the element
+			Note: This is an easier way to remember this hack instead of the JS sanctioned: Array.prototype.slice.call(args...)
+
+		There are three ways to call function:
+			1. apply
+			2. call
+			3. () invocation
+
+________
+
+Calculator:
+________
+
+	'new' keyword usage is a relic from C and Java.
+
+	It's important to add the functions to the calculator prototype, if it's called 1000 times, you don't want the function copied 1000 times
+
+	Map example - the only thing unique about a map locator is the latitude and longitude, the actual marker image should be stored in the prototype so it's not replicated at every single point.
+
+	The treehouse method of placing methods in an object and setting it as a prototype is dangerous because it aggressively replaces the prototype. The following method is preferred:
+
+		Calculator.prototype.value = function () {}
+
+	This is passive, in case Calculator.prototype existed somewhere else, you can add to it instead of writing over it.
+
+	<<<See video for advanced prototyping, via conservative namespacing>>>
+
+________
+
+RPN Calculator:
+________
+
+	Throw is meant for errors. It's a marker for specifically highlighting errors.
+
+	>>Awesome example for DRY principles in this video... Make sure you are not repeating yourself.
+
+	>>The struggle in this video was to find what 'this' is referring to when the plus, minus, divide, times functions are called in .popAndCompute.
+		--> Good lesson on this and & DRY writing
+
+________
+
+Functional:
+________
+
+	Functional Programming is less about objects, more about manipulating and transforming Data.
+
+	Remember, functions can be passed around
+
+	The function is the recipe, not the cake
+
+	makeAdder analogy; take a recipe, modify it to serve 20 people, and return that recipe as a new specific function.
+
+	How does the new formula remember the way you manipulated it? >> Closure
+
+	Adder functions closes around the number and keeps it.
+
+	Garbage collector does not destroy the function because the function is being called to be evaluated in another place.
+
+	Three ways to define functions in JS:
+		1. var myFunc = function () {}		< Probably the best way
+		2. function myFun () {}				< Compiler will create a var
+		3. function () {}					< Anonymous
+
+	Closures also work on objects, but again, it closes over the REFERENCE to the object and not a copy of it, unlike what it does to a primitive.
+
+	forEach is a way to abstract away the underlying implementation of the for loop.
+
+	element is not called immediately, remember that the function is being passed around.
+
+	MAP, FOREACH, REDUCE, FILTER: Key Ideas of Functional Programming
+		MAP returns the array, & data transformation
+		FOREACH should have some sideffects somewhere else
+		FILTER is the idea of reducing but based on criteria
+
+	for (var key in object) << This is great but is tricky, since it will propogate up the object chain to find the property. You need to limit it to the local scope by using "if (arrayOrObject.hasOwnProperty(key))" This keeps us stuck in the object we are concerned with. May be smart enought to actually ignore properties up the object chain << Review this.
+
+	Map & Reduce : Read more on how google uses this to combine and reduce data on the entire internet.
+
+	variables passed in via parameters are 'masquerading' under a different name in the scope of that function. You're a different Pete @ the party.
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

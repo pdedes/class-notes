@@ -1,0 +1,115 @@
+_________
+
+MORE DATA STRUCTURES...
+_________
+
+	BINARY SEARCH TREES....	
+
+	Linked Lists are a type of list; Not the best but a great place to start learning about tree structures.
+
+	The first node you add is the Root. The order that you add the nodes is important to how you build the tree. In fact the order of the important can be one of the main weaknesses of the tree
+
+	Equal values always go to the Left
+
+	Rules:
+		-Smaller numbers go to the left
+		-Greater or equal numbers go to the right
+
+	Depth of the tree is the number of levels to the tree. It is also the maximum number of search steps you'll need.
+
+	Big O is a log base 2... each step you take eliminates half of the tree. This is NOT the case if the tree is not balanced however.
+
+	This ^^^ could be thrown wildly off if the list was sorted. For example the tree keeps growing to the right.
+
+	Logarithmic Growth
+
+	To find one item in 10,000 items:
+		>Linked List: You need to search worst case 10,000 steps
+		>BST: Worst case (for balanced tree) is 14 steps
+
+	Inserting a node in a BST will ALSO take that many steps however so remember that, whereas a Linked List has an O(1) insertion time
+		"insert" functions are much rarer than "search" functions
+
+	There are semesters worth of information available on Trees, we only need to know that they apply incredible speed advantages.
+
+
+	HASH TABLES....
+
+	What if you have a Log(n) search that is massive still even with a BST? There are faster data structures.
+
+	A HASH TABLE is quick to lookup, at the tradeoff of space to store.
+
+	Hash Functions:
+		-Restaurant coat check example
+		-What if we could convert their name into a numerical value?
+		-Converting their name into the storage location of their coat is basically what a hashing function does. It's merely a conversion.
+		String --> HASH FUNCTION --> Storage Address
+
+	Array of a fixed size, and the address can be created using the Modulo operator to keep the size of the Array useful in this search.
+
+	Hash Tables are only --> One Way. You can't look at a coat, it's address, and know who it belongs to. This is one problem.
+
+	When you initialize a Hash Table, you need to instruct it to be a specific size. You take the expected number, and multiply it by 3 or 4 to reduce the chances of collission.
+		This precreation of an array is the costly party of it.
+
+	Every time you expand your array (double) you have to resize, move, and REHASH each value... But... if you double it every time, every time you do it you will be pushing the next resizing very far away into the future.
+
+	Aside: A UNIX dev developed a way to represent characters across countries... Video to follow.
+
+	function hash_func(value, array_size) {
+		var asciiSum = 0
+			for (loop the value) {
+				asciisum += value.charcodeat
+				modulo with array_size
+			}
+			return address
+		}
+
+	In the case of a collision, you need to have a linked list created at the address to store all of the colided items.
+
+	If you have frequent collisions, it's a good sign that you need to expand your array.
+
+	Hash Tables don't burden the 'user' to remember where something is stored.
+
+	Potential Problems:
+		1. Array Size is too small
+		2. Hash Function is poor and returns same values. Some functions may cluster is certain areas of the table. 
+
+		Function should be designed for the data you're storing.
+
+	The larger you make your array, the lower the P(collision).
+
+	In order to represent a key, you need to store the value, the key.
+
+	In order to prepare for collision, each element of a hash table should be a Single Node linked list. That way in the event of a collision, you can hook on a second node right away.
+
+		001	John Smith	201-555-1234
+		002
+		003	Lisa Jones	201-555-3252  ---> Sam Indiana	201-555-6783
+		004
+		005
+
+		^^^ Hash Location
+			^^^Key
+						^^^values 			^^^Linked List (Collision)
+
+	Object size is not a 'huge' concern anymore as data storage costs plummet. It's a bigger concern to avoid memory leakage.
+
+	Y2K actually created the outsourcing business
+
+	Processor time is a bit 'cheaper' than storage space since storage is physical.
+
+
+	If Statements don't need braces if only one line.
+
+	For LinkedLists within an 
+
+
+
+
+
+
+
+
+
+

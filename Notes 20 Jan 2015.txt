@@ -1,0 +1,159 @@
+Notes 20 Jan 2015
+
+Test_First_JS Review Session
+
+________
+
+Temperature.....
+________
+
+	Setting private variables
+	Classes
+		>This doesn't really exist in the JS world, we need to use closures to achieve them
+
+	Classes don't exist, but 'new' is essentially the JS way of creating a class.
+
+	The new key word essentially does the following things:
+		1. this = {}; <<--sets this to an empty object, and returns it implicityl
+		2.  this = { __proto__: Temperature.prototype }
+
+	The internals of the program doesn't matter... instead of worrying about constant conversion, you should always just store the degrees in F to reduce the complexity of the program.
+
+	OOP, it's standard to privately keep your variables safely captured. In order to work with your data, they should need to go through your methods. This is called ENCAPSULATION.
+
+	If you're using internal private variables, you'll need to set your own getter and setter methods
+
+		var Temperature = function(fahr) {
+			var internalFahr = fahr;
+
+			this.__getF = function () {
+				return internalFahr;
+			}
+
+			this.__setF = function () {
+				internalFahr = f;
+			}
+		}
+
+	^^^The added value is that the internal value can only be modified or altered by us. This is not about Security, this is about software design.
+
+	Only function definition creates CLOSURE.
+
+	Key lesson on Temperature is to encapsulate your data in objects so that they need to be indirectly accessed via your functions.
+
+	Properties that you want to keep internal to your classes, you should keep it private. Especially if you are doing validations on the values coming in (i.e. typeof, if/else controls etc.)
+
+________
+
+OBJECT FUNDAMENTALS..... See PowerPoint for Lecture materials.
+________
+
+
+	An object is a bag. Your keys are strings connected to the values in the bag. You can pull a string, and out comes a primitive, or even another bag.
+
+	On assignment (=), primitives get copied over by value
+	Objects get copied over by value. The bag doesn't move, you attach a new string
+
+	Primitives are assigned by copy
+	Objects are assigned by reference
+
+	Think of the juxtaposition of Google Docs & Word Doc>>>
+		Word docs are sent by copy
+		Google Docs are sent by reference
+
+	Functions are arguments, and it has a length to. Length of functions points to the number of arguments it's defined as taking.
+
+	Methods are functions assigned to objects.
+
+	Call & Apply are used to pass around the meaning of this to new contexts. It changes the "this" in the method you called.
+
+	Apply is exactly like call but it expects the arguments in an array. Without arguments, call and apply are the same thing. Arrays use apply, CSValues use Call.
+
+	Arguments are immutable since they are lists.
+
+
+	Function.prototype.call =function (thisArg, ...arguments). 
+
+	Method callsite is where 'this' is set.
+		getFullName("Mr.") 	<<-- Call site is window
+		user.fullName(); 	<<-- Call site is user
+
+
+	When assigning a prototype to a new object...
+		var david = Object.create(user_prototype);
+		david.firstName = "David";
+		david.lastName = "Yang";
+
+	You can keep chaining objects using the = Object.create(>>object<<). Think of the super-user example. 
+
+	Classical Model of Programming: "Sets" of things that have the same behavior
+		The Classical Model of Inheritance:
+
+		OOP is about how combining and representing data connections.
+
+		"NEW" was hacked in by the original language JS programmer.
+
+		There is NO difference between a Constructor function and an ordinary function. Only the capitalization which is a human convention.
+
+		The NEW keyword essentially adds two actions to the Constructor
+			1. Creates an empty 'this object'
+				this = {}
+			2. sets prototype of this to the Object prototype
+				this.__proto__ = User.prototype
+
+		Using "Object.create()" will not run the constructor function, giving the developer more nuanced control. This helps avoid side-effects of running a constructor that might do some other steps you don't want to execute.
+
+		All prototypes have a "constructor" method that point back to the object that created it. 
+
+	Functional Inheritance
+
+		This looks like database migrations... You create a script or process of Object creation and you run the object through as many scripts as needed to get to the form you need.
+
+			Object >> Mammal >> Cat 
+
+	Douglas Crawford: Book on Objects
+
+
+________
+
+Assessments on Thursday
+________
+
+	Test Scripts 0 to 5 for the assessment << go through test_first one more time.
+
+	Extra credit on objects. Objects will come into play later when we start using libraries.
+
+EADDRINUSE = "Error: Address in Use", this means that Testem is already running. Need to kill of the existing process.
+
+________
+
+MAMMALS...
+________
+
+	Trying to model real world inheritance in prototypes is actually more difficult and less flexible than it's worth. Look at real-world relationshipls as "has a" instead of "is a", the way that this problem is set up...
+
+
+	Make sure when using Object.create(Mammal.prototype)... you use .prototype and not just the constructor function name.
+
+	Each time you set up an inherited object, you need to set it's .constructor method << This helps you reuse code from earlier by genericizing the code.
+
+	definiting functions using the following process
+
+		function Cat () {}
+
+		Will actually be 'hoisted' by the JS engine. This will cause all kinds of errors that you may have difficulty addressing.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,162 @@
+________
+
+ASSESSMENT REVIEW
+________
+
+	Note on RegEX solution:
+
+	The 'match' function exists on each string in which you can use RegEx to find patterns.
+
+	/[aeiouAEIOU]/g  ... anything between the / means look for any of these characters, and the /g means search globally, i.e. return all of the matches not just the first one. Omitting g will return the first hit only 
+
+	/i = case insensitive.
+
+	>>Nimit's solution was to build an 'isVowel' helper function.
+
+	Vehicle/Truck
+
+	Not only do we want to create a Truck prototype object '{}', we want to create a prototype object and tie it to the vehicle prototype.
+
+	Only functions have '.prototype' properties.
+
+	.prototype exists as a property to copy over to objects, instead of having to copy and paste all of the items that need to be instantiated each time.
+
+	Not necessary, but recommended to also include
+	// Truck.prototype.constructor = Truck;
+
+		^^Normal prototype process breaks the constructor...
+
+		-Some programmers rely on the constructor functions being in place...
+
+	You may need the constructor to be a more generic 'call' function. I.e. you don't know what you are calling the constructor with and .call may not be sufficient to work.
+
+	This step of setting the .constructor is just about making sure all of the wiring is properly set.
+
+	chrome command: dir(object).
+
+	Best practice: mess around in the chrome console. Create objects and set inheritance and observe the chain via dir(object).
+
+	Passing an expression to Number() will convert it to a number type, any non-integers will be converted to zero.
+
+
+	String Addition:
+		The trick here with is to have an internal while loop that 'skates' forward as long as it keeps finding numbers, and it places them in a temp array. The nuance is to ensure that the outer for loop iterator also advances as you move forward in the string.
+
+		Alternative using RegEx:
+
+		str.match(/\d+/g) << return an array of consecutive digits
+
+
+________
+
+DATA STRUCTURES
+________
+
+
+	For different types of data, there are different types of ways to store it. And there is a trade-off between these options
+
+	Considerations,
+		...is the data going to be searched often?
+		...is it going to be archived for long time periods?
+
+	Think of the hospital preserving maternity ward records for up to 18 years.
+
+	Memory is organized like an excel table, it's stored at addresses, labeled in hexadecimal (which is shorter to write than base ten).
+
+	Sending an address is very 'light' and easy. The address is quicker to move than the object.
+
+	Javascript compiler handles garbage collection. This has a cost in processor cycles. C is high-performance and engineers don't want to waste those cycles on clean-up.
+
+	Memory leaks are cleaned up when variables are no longer used.
+
+	Processors work in Base^2. Floating point calculations are in Base^10, and you can't represent these decimals in the different base, so floating point calculations can't be done perfectly. This causes a rounding error because the following happens:
+		B10 >> Binary >> B10
+
+	Processors are still measured in FLOPs because they are so expensive. It's a good benchmark to determine how fast they actually are.
+
+	Some industries need specific requirements in the types of numbers they can handle:
+		>Bitcoin 
+		>Scientific calculations (Ramnik's example of the nanosecond following the Big Bang)
+		>Financial high-frequency trading
+
+	Arrays in JS are actually not traditionally arrays, they are Dynamic arrays - they grow with your needs. These are computationally more expensive than an Array in C.
+
+		>Arrays are zero indexed to signify how many 'jumps' from the first element another element is.
+
+		>Dynamic memories: If you start to reach the limits, the compiler will double and move your array to another place in memory that has available memory.
+
+	In Mac, the defragmentation has been abstracted into the background.
+
+	You cannot segfault in Javascript. You can hit a stack overflow via recursion.
+
+	Linked Lists:
+		1. Searching is Big O expensive (Linear)
+		2. Moving the list is unnecessary, the compiler will keep finding new open spots, instead of having to copy the entire array.
+
+	Adding elements to a list needs a specific order. You need to make the connection to the following node first so you don't lose it's address.
+
+	Doubly linked lists: requires more memory for an additional pointer, but you can search in both directions so it is a bit faster.
+
+
+
+________
+
+DATA STRUCTURES :: In class Pair Programming
+________
+
+	Queue
+	
+		Nimit suggests an object for the extra robustness. You can delete and remove items from the object much more cleanly than the array.
+
+		His strategy on queue is similar to linked list. He will allow the object to have data loaded in, but will maintain a head and tail pointer that will increment and move with the queue as it grows.
+
+		'Delete' keyword can only be used on objects. It tells the JS interpreter to delete the object whenver there is an empty cycle. It does not ensure immediate deletion. It will ensure that the memory is freed. BUT if there is anything still pointing to that object, garbage collection may not work properly
+
+			>Objects make sense for queues, since in real implementations, you have to deal with large objects, and it's more cost effective to simply delete and 'release' the memory instead of more expensive array.prototye.slice operations.
+
+			>Again, delete only works for objects which is why it's a good choice for buildling a queue. Using array methods is more expensive (such as deletion, slicing).
+
+	If this.head and this.tail are once again equal to each other, they have converged and you are on the last element of the list
+
+	
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

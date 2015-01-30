@@ -1,0 +1,7 @@
+Note: Setting Object.create() on a constructor function, you will not properly set the inheritance correctly. The prototype of the Constructor function is FUNCTION.prototype not the object's prototype.
+
+Only functions have access to a prototype property. You can't reset an instances prototype by using "obj.prototype = {sayHi: function () {}}"
+
+Using call outside of a constructor is slightly different than within an object.
+	1. Inside a Constructor Function you use "this"
+	2. Outside of a constructor, the argument is the name of the object instance meant to be called on.
