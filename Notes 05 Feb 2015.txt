@@ -65,6 +65,7 @@ _________
 	A JavaScript canvas is a quicker way to render a box/table instead of using HTML tables.
 
 
+	BUILD TETRIS!!! you have all the tools now. A 'battle tetris' game could be built a bit later on using a backend.
 
 
 
