@@ -23,4 +23,30 @@ ________
 
 		BTW: Shutting down node/console will reset primitives to their native state. 
 
+
+________
+
+SEARCH TREES...
+________
+
+	The HTML DOM is actually a tree
+
+	<HTML>
+		<HEAD>
+		<BODY>
+			<DIV>
+				<P>
+
+	Sizzle was the first selector engine that helped style pages using JavaScript. jQuery was extremely popular from 2004-2010... but now that's also on the way out.
+
+	document.querySelectorAll('head')
+		>>will give me the head tag
+
+	document.querySelectorAll('.photo')
+		>>will return the images in the page
+
+	Servers can now execute JS at various time frames of each site. This helps google see javascript apps even after they've loaded.
+
 	
+
+

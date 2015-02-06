@@ -1,0 +1,105 @@
+_________
+
+SELECTOR.JS...
+_________
+
+	Important lesson is to realize that a webpage can be almost entirely built with JS objects now. Writing HTML is useful for speed performances.
+
+	var selectorTypeMatcher --> you could have also split the "tag.class" examples and examined the length.
+
+		RegEx: 
+		(1 or more word characters, ".", 1 or more word characters)
+
+			>>  /\w+\.\w+/  << is our expression
+
+		-All RegEx start and end with /expression/ (slashes)
+
+		-When you want to express the literal period in RegEx, you need to escape it via /. (slashdot).
+
+	var matchFunctionMaker
+
+		Look at "class List" method as the browser will accept other types of delimiters other than spaces. By using class list, we have the browser do the separation for us.
+			
+			>> element.classList will return an array-like object similar to 'arguments'. The only method this array-like object has is 'contains'
+
+				firstH2.className = ["lead name"];
+				firstH2.classList = ["lead", "name"];
+				element.classList.contains("lead") is true
+
+				>We can use this [].slice.call(firstH2.classList, 0);
+
+				^^^We normally don't use slice from 0, but in this case it's extremely useful for conversion.
+
+		.createElement is used in the tester
+
+	var traverseDomAndCollectElements...
+
+		What do we need when we do RECURSIVE functions?
+			1. Base Case
+				>Simple version of the problem that is easy to solve but non-trivial. In this case, if the whole tree were just one element, then we need to check the root itself. 
+			2. Recursive Case
+
+
+		The parent call will ask the children for it's answers, and it will combine the answers into it's own solution and pass it up. This also handles breadth by iterating through the children array in the for loop.
+
+		The trick was to run a for loop for the length of the .children array. 
+
+		Humans natrually think in breadth first instead of depth first recursion
+
+		ALSO ... breadth first allows for better parallelization.
+		Think of the example where Nimit asks everyone how many people work at everyone's companies. It's better to give the directive to everyone and allow them to head out and find the answers instead of doing it one company at a time and add the numbers to the queue.
+
+		Performing depth-breadth recursion is queue based and not call-stack based. The trick is that you utilize an array as a queue. We're adding in dom elements to the queueu to be evaluated eventually and in order.
+
+		A stength of the bread recursive for loop is that on every loop, queue.length grows and helps the loop keep running as long as necessary.
+
+		You want to use breadth-first recursion on scale problems... Think about depth first on the web, the call would never return because of the scale of the internet.
+
+_________
+
+SORTING...
+_________
+
+	Sorting is an old topic in Computer Science terms. The art has come very far since.
+
+	It's incredibly important for making other processes much more efficient and fast. Think about databases. Sorting makes many algorithms work better.
+
+	Bubble Sort: Compare two items, if they are out of order, swap them. You execute continuously until the list is sorted. Horrible execution time. O(n^2).
+		> A list of 10,000 items would take 100 MM Operations to sort.
+
+	Merge Sort: Invented in 1945. Divide & Conquer; take your unsorted list and breaking it into halves. This continues until there is only one element in each list (you could consider each of these broken elements sorted). You then merge the elements in a sorted way.
+		>On the return from the recursive dive, the merging algorithm looks at he returning values to piece them together.
+		>Run time: n*log(n)
+		>A list of 10,000 will take 135,000 steps
+
+	Insertion Sort, Selection Sort, Quick Sort are other sorting algorithms which are used in CS.
+
+	Nimit's Hack Sort: Uses the advantages of array's natural sorting by placing the numbers to be sorted as the indeces in an object and letting the compiler put them in place. The downside is the potentially large memory space.e
+
+	Coding note: using array.concat() will return a NEW array so make sure to save it in a variable if your intention is to use it again.	
+
+	Bubble Sort in Practice:
+		Creates a separate function 'swap' that is passed in to do the working part of the algorithm
+
+		function swap (a, b) {
+			var x = arr[a];
+			arr[a] = arr[b];
+			arr[b] = x;
+		}
+
+	Merge Sort in Practice:
+		Always be careful using altering functions in if/else or loop control blocks used for assessing logic. For example, using 'shift' to compare to the first letter, will alter that array when all you intended to do was compare it to a check.
+
+
+	This & That
+
+	Function definition creates closure
+	Function invocation creates 'this'
+		> Look up shims/polyfill, and calling anonymous functions to preserve 'this' and make sure it's getting passed through correctly.
+
+
+
+
+
+
+

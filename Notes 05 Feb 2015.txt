@@ -1,0 +1,72 @@
+_________
+
+GAME OF LIFE...
+_________
+	
+	Attaching clicks to the table, you want to reduce the amount of events it takes to run the board. A trick is to assign a click event to the parent so that it affects the children as well. In other words, add the click event to the table, and allow the browser to tell you which part of the table was clicked.
+
+	All events in JS will send you the event object which informs you about the event. You can add eventInfo to the debugger tab window. Information includes stuff like clientX & client Y (coordinates). Keycodes can help you detect which keyboard strokes were entered.
+		>There are lots of repeats (mostly due to poor browser conventions);
+		>We want srcElement & target - these actually target the cells on the board using the HTML IDs we assigned to them. (#td0-0).
+		>If you're in the debugger frozen, you can go to the console and execute code as if your'e at that exact point in time.
+
+		Using "var cell = eventInfo.target" we can access that event info using the .target to access the property.
+
+		>The advantage of this implementatio is that we don't have to loop through the table and add all of these events. You can reduce the number of events loaded into memory. A 100x100 table has 10,000 events loaded every single time using the boilerplate method.
+
+		>You should never hardcode the variable of an instance inside of a class function.
+
+		>The browser forces 'this' to switch to the button being clicked, which is why the 'this' chain was broken. While intended to be a convenience this causes this-switching problems.
+
+	THE BIND method, is the way to override JS's reaction to reassigning 'this'.
+
+		What results here is the bizarre line stepbtn.onclick = this.step.bind(this);
+
+		^^We are sending the 'current gol object' to the prototype.step method as a parameter of BIND.
+
+		The step button also gets an event. Querying the console with 'event' after the click, you can access the button.
+
+	You Need to make two passes on the board
+		1. Count the neighbors of each cell
+		2. Alter each cell of the board based on it's neighbor count
+
+	Using Func programming, create a new side function that helps traversal much easier >> GameOfLife.prototype.forEachCell
+
+		GameOfLife.prototype.forEachCell = function (fun) {
+			var myid, cell;
+
+			for(var y = 0; y < this.height; y++) {
+				for (var x=0; x< this.width; x++) {
+					myid = x+'-'+y;
+					cell = document.getElementByID(myid);
+					if (cell) {
+						func(cell, x, y);
+					}
+				}
+			}
+		}
+
+		Using this formula, we can pass in a function that will be iterated over the grid.. This has now been abstracted away for us once we pass in the function to be performed.
+
+	Sum Live Neighbors: Nimit suggests adding an attribute to the cell of it's live neighbors to save the live neighbors count.
+
+	Converting a string to a number can either be done using:
+		1. parseInt(expression)
+		2. multiple the string by 1, which will make JS cast the string as an integer (shorter but may be confusing for others reading your code)
+
+		>>>The triple '===' caused the problem in the lecture because it was being very explicit, a '==' would have done a typecast and worked.
+
+	INTERVAL
+
+		Important to be careful about closure/this/that here. Remember that 'this' is determined at function invocation
+
+	EMAIL: CODE is nightmarish >> avoid, avoid. Email clients attempt to disable spam access to your box so fancier elements are disabled (css, js, etc.).
+
+	A JavaScript canvas is a quicker way to render a box/table instead of using HTML tables.
+
+
+
+
+
+
+
