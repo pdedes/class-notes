@@ -1,0 +1,197 @@
+_________
+
+NODE.JS
+_________
+
+	JS was built before CSS and AJAX. It was only used for very small scripts on the web. Perhaps showing and hiding elements.
+
+	Web 2.0 is the ability to update elements of the page without reloading > increased interactivity
+
+	2002 saw the start of Web 2.0, and saw jQuery shortly afterwards
+
+	2008 Was the release of Chrome and the V8 engine. Following that, due to the massive speed increases, V8 was ported out of the browser and into the file system. This became Node.
+
+	In the browser, WINDOW represents the entire tab, and DOCUMENT is the DOM tree. Dev tools is the API that lets us interact with the browser.
+		In NODE> WINDOW and DOCUMENT are not available.
+
+	In Node, you have access to PROCESS, which gives you access to many underlying properties of the system, similar to window/document in the browser.
+
+	JS is highly concurrent, but this is not the same as parallel.
+
+	BROWSER:
+		>Window
+		>Document
+		>History
+
+	NODE:
+		>FS
+		>Process
+		>Net
+
+	Modules
+		In node, every file has an isolated scope. You need to use require to bridge between files and the objects within the other files.
+		Files that reference items in other files need to be linked using require. They are not in each other's scope.
+		Node has a module system that allows you to send data from one file to another.
+
+			1. Add 'module.exports = myObj'   << putting this at the bottom of the sending file. This is like a return statement.
+			2. Add 'myObj = require('./fileA');   << at the start of the receiving file
+
+			>>Skipping step 1 would have the sending file execute, but you won't be able to get anything out of it. The file DOES run because it was required, but you don't have access to the elements of the file because module.export was skipped'
+
+			NOTE: the variable names don't have to be the same between the files.
+			NOTE: NODE caches requires module.exports
+			NOTE: You can export anything you want, but only in the single module.export
+
+
+	Servers
+		You can't write servers in browser JS
+
+	Chrome is architected to share the V8 engine between tabs.
+
+	NPM: NODE PACKAGE MANAGER
+		Community of packages developed by other programmers and available to expand functionality
+		There are two styles of requiring in NODE
+			1. Path: a direct path name to a file ('./fileA.js')
+			2. Package Name: it will iteratively search for the node_modules folder
+
+		Package.json is a special package config file that automates the package handling process. You then execute this using 'npm install'
+
+		NPM by default installs the package to your local project folder. You can ALSO install to the entire computer system using the '-g' flag which stands for global
+
+		NPM will resolve all dependencies automatically. If you install something, NPM also ensures what is installed has it's dependencies installed.
+
+	ASYNCHRONICITY
+		The order that things are finished in, is not necessarily the order they were received in.
+
+		The restaurant skit exemplifies the process of reducing the critical path.
+
+			The cook could be viewed as the OS, and even though it might be overloaded, we can scale this up to handle the load, whereas the language
+
+		What makes JS efficient is not that it is parallel, it is that the idle time is not wasted, but the next action in the queue is executed. This is a queue.
+
+	NODE has three areas
+		1. Callstack: The history of called functions
+		2. Queue: The call stack can pull from here if it is idle
+		3. Listener: When this fires, it places something on the queue. That something is the callback function. When the call stack is empty, it pulls from the queue and executes it finally.
+
+	In the chef scenario, we can presume that the other systems could potentially be blocking themselves.
+
+	Asynchronous programming is harder to program. If a program is asynchronous, it is executed not necessarily in the same order it was started.
+
+	True parallel programming (multil-threading) is another solution to blocking (although it does have blocking elements). The idea there is to just have different program steps running on different threads simultaneously to collapse the end-to-end execution time.
+
+	Just because something has a callback function, does not make it necessarily asynchronous. You need to read the source code to get an idea of what it does with the callback.
+
+	Timeouts and Asynch:
+		The callback is called from within the Asynchronous task.
+
+		var someAsyncTask = function (cb) {
+			var randomTime = math.floor...
+			setTimeout(function() {
+				console.log
+				cb(); << callback
+			})
+		}
+
+		callback function () {
+
+		}
+
+		A problem with just keeeping track of the total count, is that order is lost. We need to control order. It feels like we are returning to a synchronous methodology because we want the items to come in and get ordered.
+
+		Business logic requires sometimes certain things to happen in a specific order. One way to do this...
+
+			someAsyncTask(function () {
+				console.log("done with 1");
+				someAsyncTask(function () {
+					console.log("done with 2")
+				})
+					>>---->>> so on and so forth... this could go on for i times
+
+			}
+
+			^^^We need to do find a way to do this that is generic enough for a different size of events. 
+
+		RECURSION is the right way to dive as deep as is necessary to reach down to an callback chain of arbitrary length
+
+			var asyncIteratorFiveTimes = function (n, message) {
+				someAsyncTask(function () {
+					if(n<6) {
+						asyncIterator(n+1, message);
+					} else {
+						console.log(message);
+					}
+				})
+			}
+
+		THIS is very difficult to maintain and do everytime you want to maintain an ordered inbound stream of data. There is a library that could help us keep things in order. 
+
+		Async.JS... Install it!
+
+			var async = require('async')
+
+			var someData = [1, 2, 3, 4, 5]
+
+			async.each(someData, function () {}, function () {})
+
+				1. The first callback is run at the start on each element of someData... for example, sending an email
+				2. The second callback is what to run once all the data is received.
+
+			async.each(someData, function (theNumberYoureOn, tick) {
+				console.log('kicking off', theNumberYoureOn);
+				
+				someAsyncTask(function () {
+					tick(); //This will kick off out of order...
+				})
+			}, function () {
+
+			})
+
+					  ******
+			async.eachSeries(someData, function (theNumberYoureOn, tick) {
+				console.log('kicking off', theNumberYoureOn);
+				
+				someAsyncTask(function () {
+					tick(); //This will kick off in order...
+				})
+			}, function () {
+
+			})
+
+		*Note: Tick is a library variable.
+
+		>>>>>>>>>>>
+			var iterator = function (fileName, tick) {
+				fs.readFile(fileName, function () {
+					tick();
+				}
+			}
+			
+			// if there were ten things in the collection, when tick hits ten...MasterCallBack gets called
+
+			async.eachSeries(collectionOfFileName, iterator, masterCallBack)
+
+			// .eachSeries will ensure things go out in order
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

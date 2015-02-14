@@ -1,0 +1,169 @@
+________
+
+FILE WATCHER
+________
+
+	Module.exports; be careful writing 'exports =...' You may overwrite the exports object.
+		By good convention, you should avoid assigning anything using this shorthand. Stick with module.exports.
+
+	ASYNCHRONICITY
+
+	process.argv > hack this using Array.prototype.slice.call...
+
+	Package.json can be created using "npm init", and hit enter a few times to blank out the form. You can add dependencies either by:
+		1. Altering the file
+		2. Using $npm install 'package' --save
+
+	If you use a port that is already assigned to something, you're going to run into a roadblock. There are standards for different protocols...
+		HTTP: 80
+		EMAIL: 25
+
+________
+
+EXPRESS.JS, and the Workshop
+________
+
+	EXPRESS is a node library that helps us handle http requests/responses nicely.
+
+	MORGAN is a logging library. As requests come in, it enters details in the console/terminal.
+
+	APP.JS:
+		app.get:
+			GET requests are dictated using this method, in the example @ the "/" root source
+
+			NOTE: IP addresses, assigned internally to the network that you're currently on
+
+		If you attempt to send multiple http responses at once, you'll fail because you only get once HTTP response to concat and send.
+
+		SET TIMEOUT is a brittle solution, because we don't necessarily know how long it takes, so we have to presume the delay time. Hardcoding a files.length is a problem though, because it's not flexible on our arguments list.
+
+		With fs.readFile, we will get the return calls in different orders each time. You just don't know how the data will come back to you and in what order. One solution is to add an index to the forEach loop, in conjunction with a counter.
+
+	ASYNC (The Module);
+
+		Sometimes you don't necessarily need to return things in the right order, but sometimes you need to process them in the right order. For example you need information from one operation before processing the next one. Async has the following convention
+
+			1. collection to act upon
+			2. function to run once on each
+			3. a function to run completely after the iteration is complete
+
+		ASYNC controls for different ways of 'running the relay' race
+
+		async.map: 
+			1. Everyone run at once
+			2. let me know when you're finished
+
+		async.mapSeries... In some ways, this is inducing blocking, but only because the order is important.
+			1. Team 1, you run first
+			2. when you're done, Team 2 goes
+			3. when you're done, Team 3 goes...
+
+
+		async.mapSeries(filenames, function(aFileName, moveOn) {
+			fs.readFile(aFileName, function(err, data) {
+				moveOn(null, data.toString())
+			})
+		}, function(err, fileStrings) {
+			response.send(fileStrings)
+		})
+
+			>>When moveOn is called as many times as there are filenames, async knows to fire the finalizing function.
+
+		EJS is for JS injection into javascript.
+			You use 'render', a method that express has which builds off of a templating engine, in this case EJS.
+
+			function (err, fileStrings) {
+				response.render('mainView', {
+					//whatever goes into this object, this view has access to
+					files: 
+				})
+			}
+
+________
+
+EXPRESS.JS
+________
+
+	There are many protocols on the internet, HTTP, HTTPS, SSH, IMAP, SMTP, IP, NFS, FTP...
+	They are all built on the mother protocol: TCP, the basic transaction of binary data on the net
+
+	requests go from the client to the server  	----->
+	responses go from the server to the client	<-----
+
+	There can only be one response for one request
+
+	CRUD
+		GET requests tend to be requesting information
+		POST requests the creation of content
+			A tweet might be a POST request, since you're requesting the creation of content
+		PUT requests an update
+		DELETE requests a deletion
+
+	ROUTE, everything after the .com/<<route here>>>
+
+	Heartbleed, the security issue, was essentially opening up a route to get more data from the server's memory delivered than expected via the HTTP Headers.
+
+	Go to Chrome Dev Tools > Network > Headers to see the requests and responses
+
+	RESPONSE:
+		Very similar to the Request, but without a verb
+		Includes a status code:
+			200: OK
+			201: created
+			404: Not found
+
+	EXPRESS is a library for handling this protocol. It treats requests as events, and responds to them. It can fire a whole series of functions to respond to those requests.
+
+		__________
+
+		var express = require('express')	//Pull in the Express module
+		
+		app = express();					//Initialize an instance of Express
+
+		app.listen(1234);					//Instruc the app object on where to listen to requests
+
+		__________
+
+			Running this will give us a 404, because the app doesn't know how to respond
+
+		__________
+
+		app.get('/', function(request, response) {		//Here we give the app something to work with
+			console.log(request);						//Logging the request object shows us a very large object
+			console.log(Object.keys(response))			
+		})
+
+		__________
+														
+		app.get('/', function(request, response) {		//Response has many useful methods, including 'send'
+			response.send("Hello World!");						
+		})				
+
+		__________
+
+		app.use(function(request, response, next) {		//Similar to "Morgan" this is basic console logging. This will fire everytime.
+			console.log(request.method, request.url);	//Next says go on to the next function that matches this request
+			next()										//This current implementation says you want to listen and response to EVERY request
+		})												//app.use('/users',...) would then further narrow down where it's listening
+
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

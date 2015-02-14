@@ -1,0 +1,83 @@
+___________
+
+TWITTER Workshop
+___________
+
+	The App.js file is the initial setup of the application. It's good practice to modularize when possible, for example, move routes to a separate routes.js file
+
+	Modulalrization:
+		You can get information from a module, BUT if you want to give information to it, 'require' does not support that. The module needs to be turned into a function in order to get parameters passed to it, via functional programming.
+
+		It's good practice to simplify app by pulling as much out of it as possible.
+
+	When we first run the application, the stylesheets were off, this is because we had not explicitly made the public folder available to GET requests. We need to use...	
+		app.use(express.static(__dirname + '/public'));
+
+	One reason the URL scheme suggested (/users/:name/tweets/:id) is cardinality, one User may have multiple tweets, followers, or other resources etc.
+
+	The Tweet ID can be tagged with a number via the ADD function in TweetBank. Just add ID to the object and use data.length as an indicator for which number is available next.
+
+	Getting the individual tweet id was solved using ParseInt, the problem being that the comparison between "ID" from the URL and the Data store was between unequal types (Int & String). You need to use a combination of console.log and upstream/downstream thinking to find the issues.
+
+	Always test your mental model in the code by using the console to see if data is getting delivered (in the right format) to the destination that you expect. For example, for 'req.params.text' becomes a problem for post requests - we need to use a body parser to properly read these inputs.
+		FORM DATA >> (see source in Chrome Dev Tools). The name and text of the tweet is being passed in an ugly format, A tweet that has the following data:
+		name: Pete
+		tweet: Hello there.
+
+			May be passed to the server as...
+
+			name&Pete%20&tweet&Hello%20there (an example). 
+
+		We need a way to peel this apart for the useful information. We use Body Parser middleware to handle these inputs.
+
+	SOCKETS
+
+		HTTP does not support updating clients...
+			1. One client cannot notify the other client the update has happened
+			2. One client needs to be constantly polling the server for new data via http to mimic a realtime feel
+
+		Sockets allow the browser to keep open a persistent connection with the server. It's a separate protocol.
+
+		You cannot initialize a connection via Socket, but you can handle all of the information afterwards doing it. Generally speaking, not all requests are made with Sockets. Sockets are great when you need to communicate across other clients changes that have happened.
+
+		$npm install socket.io --save
+
+			var server = app.listen(3000);
+			var io = socketio.listen(server);
+
+			^^The socketio listen event piggy-backs on the established http connection port.
+
+		The timing and scoping of initializing IO in the app/index.js files can be very important to prevent errors.
+
+			IO is not defined in the index file, so we need to be able to pass "IO" as a variable to the Router function we have created...
+
+		Appending the tweet to the DOM - You want to find the correct container
+			1. Find the container
+			2. Find the children
+			3. Find the last child
+
+		A few ways to circumnavigate the pain of maintaining the HTML are below. There are tools to help with this messy maintenance issue.
+			1. Build a side SWIG template for the individual tweets
+			2. Angular...
+				>Receives JSON from the server
+				>Angular uses client-side JS to built the template on the spot...
+
+
+		Module exportation of a function is useful when you want to send it information upon requiring it.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
