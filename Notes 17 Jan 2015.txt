@@ -68,8 +68,9 @@ ________
 	PARAMIFY (); << This is important becuase it's how you pass data to a URL!!
 
 		This is used in conjunction with a GET request for public sites since you can bookmark it (save it and reuse it)
-		The hidden request is a POST request. This is meant to hide data (passwords, messages, etc.).
+			POST-UPDATE: see the 'body-parser' node module, used to parse inputs from the client or user. An example of this was seen in the twitter workshop, where the user-submitted data was ingested via HTTP, which delivers the data in an ugly format that needs to be peeled apart.
 
+		The hidden request is a POST request. This is meant to hide data (passwords, messages, etc.).
 
 		When looping through objects >> For/In loops
 
@@ -98,7 +99,7 @@ ________
 		Slice is a way to make copies of arrays as follows
 			var argumentarray = [].slice.call(arguments, 0)
 										 ^^^ by default slice method assumes 'this' is the calling array. This is a hack to abuse the slice method, that is not available on 'argument' which is a list...not an array!
-										 				^^^ Zero tells slice to return all the element
+										 				^^^ Zero tells slice to return all of the elements
 			Note: This is an easier way to remember this hack instead of the JS sanctioned: Array.prototype.slice.call(args...)
 
 		There are three ways to call function:

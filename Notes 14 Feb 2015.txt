@@ -66,6 +66,83 @@ ___________
 		Module exportation of a function is useful when you want to send it information upon requiring it.
 
 
+___________
+
+DATABASES
+___________
+
+	What's in a name?
+
+	What's in a datapoint?
+
+	We'll talk about SQL & NoSQL databases
+		>Relational databases have been around for almost 50 years
+		>NoSQL have excellent new features, but Relational is still the standard
+
+	Databases that can't be loaded into RAM start to change your interactions with it. They are very hard to scale, therefore are usually done last.
+
+	DBs need special attention when scaling. How do you replicate a new post across all of the databases at nearly simultaneous time?
+
+	Oracle was the first company that brought a product to market from relational db theory.
+
+	The DBMS abstracts away data storage for the business or non-technical person. It is a layer between the schema and the application. It knows where to find the data you're looking for.
+
+		Devs only need to know the DBMS language to find and alter data
+
+	SQL is a language for talking to the DBMS
+
+		--> You can specify what answers the query should return, but not how the query is executed or where and how the data is stored.
+
+	Databases also handle file/locking multiple access for you.
+
+	Vocabulary;
+		-Tables
+		-Attributes (Columns)
+		-Instances (Rows)
+		-Duplicate rows are not allowed
+		-Schema - the data structure
+			>Shouldn't change very often but they do
+			>SQL is bad at this
+			>NoSQL is good at changing on the fly
+
+	Example: We have two tables: Students, Schools
+		>Introduce a third table "Enrollment" which relates those two tables
+
+	The whole point of web applications, to get store and retrieve data...
+
+	SQL Commands --> CRUD
+
+		INSERT > Insert a new row
+		SELECT > Get data from a DB
+		UPDATE > Update existing row
+		DELETE > Delete rows from a table
+		CREATE
+
+	A relation table does not replicate all of the data, it tries to minimize the amount of duplicative data by utilizing the table ID #s.
+
+	Example...
+
+		SELECT 	*
+		FROM 	Student
+		WHERE 	age > 12
+
+	A relationship between two tables can be used to query for the data you want. You do this using a JOIN.
+
+	Advantage of relationship tables is that they can help preventing the duplication of data, It's similar to DRY programming in a sense.
+
+	JOIN gives you a temporary view of this 'terrible' duplicative view in memory. You can then perform your query, and the join will be destroyed following that.
+
+	Creating a JOIN happens in two steps:
+		1. Join the first table with the relational table based on a shared column
+		2. Join the second table with the one from step 1, based on a shared column (this will likely cause the duplication)
+		---
+		Next: Query the newly JOINed table
+
+
+
+
+
+
 
 
 

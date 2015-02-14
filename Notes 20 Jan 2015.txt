@@ -14,7 +14,7 @@ ________
 	Classes don't exist, but 'new' is essentially the JS way of creating a class.
 
 	The new key word essentially does the following things:
-		1. this = {}; <<--sets this to an empty object, and returns it implicityl
+		1. this = {}; <<--sets this to an empty object, and returns it implicitly
 		2.  this = { __proto__: Temperature.prototype }
 
 	The internals of the program doesn't matter... instead of worrying about constant conversion, you should always just store the degrees in F to reduce the complexity of the program.
@@ -52,10 +52,10 @@ ________
 	An object is a bag. Your keys are strings connected to the values in the bag. You can pull a string, and out comes a primitive, or even another bag.
 
 	On assignment (=), primitives get copied over by value
-	Objects get copied over by value. The bag doesn't move, you attach a new string
+	Objects get copied over by reference. The bag doesn't move, you attach a new string
 
-	Primitives are assigned by copy
-	Objects are assigned by reference
+		Primitives are assigned by copy
+		Objects are assigned by reference
 
 	Think of the juxtaposition of Google Docs & Word Doc>>>
 		Word docs are sent by copy
@@ -123,7 +123,7 @@ ________
 
 	Extra credit on objects. Objects will come into play later when we start using libraries.
 
-EADDRINUSE = "Error: Address in Use", this means that Testem is already running. Need to kill of the existing process.
+EADDRINUSE = "Error: Address in Use", this means that Testem is already running. Need to kill off the existing process.
 
 ________
 
