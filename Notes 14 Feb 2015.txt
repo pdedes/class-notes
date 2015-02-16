@@ -138,6 +138,110 @@ ___________
 		---
 		Next: Query the newly JOINed table
 
+	QUERIES & KEYWORS
+
+		SELECT/FROM 		The basic SQL query
+		SELECT/FROM/WHERE 	The query including a conditional
+
+		WHERE
+			SELECT * FROM movies WHERE year BETWEEN 1999 AND 2003;
+			SELECT * FROM movies WHERE year = 1999 OR 2003;
+
+		ORDER BY
+			SELECT * FROM movies ORDER BY year ASC;
+			SELECT * FROM movies ORDER BY year ASC, title DESC;
+				>This double grouping firsts orders by years ascending, and within that group orders titles descending.
+			SELECT name FROM actors ORDER BY name DESC;
+				>Gets actors names and sorts them in reverse alphabetical order
+
+		LIMIT & OFFSET
+			SELECT * FROM movies LIMIT 10
+				>Only returns the first 10 hits
+			SELECT * FROM movies LIMIT 10 OFFSET 4;
+				>Returns only ten results but starting from the fifth entry
+
+			Note: LIMIT & OFFSET can be further collapsed into LIMIT with two arguments where
+				-Argument 1 is the Offset
+				-Argument 2 is the offset
+
+			Therefore we can write the second query as...
+				SELECT * FROM movies LIMIT 4, 10;
+
+		NULL
+			The spot is empty in the database. If you're not careful, your queries may return unexpected problems.
+
+			You cannot use '=' with NULL, you must search with IS NULL.
+
+			You can filter out Null values by using WHERE column IS NOT NULL
+
+	JOINING, NORMALIZATION...
+
+		Normaliztion is the process of setting up a new table and removing redundant data to this new table. You can then relate these tables using the ID key.
+
+		KEYS
+			PRIMARY, completely unique, can't be null, can't be duplicated
+				ID#
+
+			UNIQUE, similar to primary, can be null, can't be duplicated
+				EMAIL
+				SSN
+
+			FOREIGN, describe relationships between two tables, can be null, can be duplicated.
+				genre_ID
+
+		ALTER TABLE movies ADD COLUMN id INTEGER AUTO-INCREMENT PRIMARY KEY FIRST
+			ALTER TABLE: modifies an existing DB table
+			ADD COLUMN: inserts a column
+			INTEGER: defines type
+			AUTO-INCREMENT: instructs the DBMS to handle the counting
+			PRIMARY: indicates this new column is the primary key
+			FIRST: inserts the column as the new first column of the table.
+
+			**Primary keys by definition do not allow null values, so we don't need to explicitly declare it.
+
+		ALTER TABLE movies ADD COLUMN genre_ID INTEGER NULL ADD CONSTRAINT FOREIGN KEY (genre_id) REFERENCES genres(id);
+
+			Here, the new elements help us create the relationship between the movies and genres tables. The CONTRAINT keyword helps limit to the values availble. We want the genre_id to be a foreign key, we want the genre_id to be CONSTRAINED to the Primary IDs of the genre table.
+
+		UPDATE movies SET genre_id = 1 WHERE id = 8 OR id = 9;
+
+			Using this command, we can update the rows while also constraining our options for genre_id. If we were to attempt to set the value to a number outside of the primary keys available in table 'genres' we'd fail that constraint and it wouldn't work.
+
+		CREATE TABLE name (col_name CHARACTERISTICS, col_name CHARS)
+
+		ALTER TABLE table ADD COLUMN col_name INTEGER AUTO_INCREMENT PRIMARY KEY FIRST;
+			>Inserts a new column with those attributes listed applied.
+
+		ALTER TABLE t_movies ADD COLUMN fk_genre_id INTEGER, CONSTRAINT FOREIGN KEY(fk_genre_id) REFERENCES t_genres(pk_id);
+
+		Joining our new tables...
+
+		INNER JOIN
+			SELECT * FROM movies JOIN genres ON movies.genre_id = genres.id;
+				JOIN is the keyword merging our tables
+				ON is the conditional, informing the DBMS which columns should be used to align.
+
+				Note the notation here table.col_name
+
+			An inner join is the overlapping section of the venn diagram created by both of the tables movies and genres
+
+		OUTER JOIN
+			LEFT
+				If we wanted to return the entire movies table along with the inner join values, this is called a left join.
+
+			SELECT * FROM movies LEFT OUTER JOIN genres ON movies.genre_id = genres.id;
+				>You will get many null values in this situation.
+
+			RIGHT
+				The overlap of the inner join with the table on the right
+
+		ALIASING
+			Using nicknames for columns during a join to help us make sense of the merged data.
+
+			SELECT movies.title, genres.name AS genre_name FROM movies LEFT OUTER JOIN genres ON movies.genre_id = genres.id;
+
+				AS: Assigns the alias
+
 
 
 
