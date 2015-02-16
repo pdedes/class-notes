@@ -242,6 +242,39 @@ ___________
 
 				AS: Assigns the alias
 
+			IMPORTANT...Aliases cannot be queried upon! You'll need to search on the actual table column names.
+
+	CALCULATION, AGGREGATION
+
+		Mathematical operations can be applied to data sets via SQL commands
+
+		GROUP BY
+
+		HAVING
+			Similar to Where, but used to filter once calculations and groupings have been applied
+
+	STRING MANIPULATION
+		LOWER(col_name), UPPER(col_name)
+			force all to lower case or upper case
+
+		LENGTH(col_name)
+			provides a character count
+
+			Use in conjunction with HAVING to institute a filter
+
+		CONCAT(first_col, sec_col) --> Takes any number of arguments
+			You can use other functions within the arguments passed.
+
+			CONCAT(first_col, " ", sec_col) to add a space
+
+		SUBSTRING(string, start_char, length_of_partial)
+			In SQL counting starts at 1 << remember this, so the start_char argument starts at 1.
+
+		TRIM
+			Use this to remove characters from the start or finish. You can also specify specific characters to be removed.
+
+	DATE & TIME
+		DATE FORMAT(col_name, date_format_codes)  <-- see SQL documentation.
 
 
 
