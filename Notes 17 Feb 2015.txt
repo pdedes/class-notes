@@ -1,0 +1,40 @@
+________
+
+SQL Queries on Movies
+________
+
+	Sometimes the orders of subqueries can affect the run time against the DB
+
+	You can use (,) in place of the JOIN/ON syntax. For example
+
+		SELECT
+		FROM actors, roles
+		WHERE roles.actor_id = actors.id
+			(this is where we declare the characteristics of the join)
+
+	ORDER BY works on aliases
+
+	GROUP BY is conceptually similar to pivot tables in EXCEL
+
+	Nimit's answer is similar to the way you visualized the Kevin Bacon problem. You want to reduce the tables down to Kevin Bacon's drama films, and then re-join it back to the movies/actors lists using those applied filters.
+
+	'EXISTS' keyword checks if there is at least one row returned
+
+
+________
+
+FQL; Functional Query Language
+________
+
+	The methods seem to be chained in a specific order.
+
+	moviesTable is an FQL instance
+
+	The point of the exercise: 
+		This language can be a middle-layer between your app and your data. SQL was supposed to abstract away the database details, BUT there are still many dependencies between the data schema and the SQL database.
+			>If your ORM is good enough, it should be able to wrap your data in a way that your application can access it regardless of what
+			>Chaining exercises (similar to jQuery)
+
+	Chaining
+		1. Allows you to group functions in sequence to have them execute in order and pass results to the next function in series
+		2. No need to declare middle variables to hold the values in between functions

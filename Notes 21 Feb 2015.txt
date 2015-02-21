@@ -1,0 +1,32 @@
+___________
+
+FQL
+___________
+	
+	prototype.merge {}
+		Use Object.keys(objName).forEach( function (){
+			obj1[key] = obj2[key];
+		})
+		//This will cause problems later on
+
+	prototype.count {}
+		return this.exec().length;
+
+	try to use '.forEach' more often
+
+	SELECT and WHERE operate on different axes of the table
+		Where on the y
+		Select on the x
+			>Underscore has a function called 'pluck' which does this
+
+	Order
+		.sort() will mutate the array in place using the function that you pass it. Since it does do it in place, you do not need to pass the value into a new variable to store it.
+
+	You need to return to prototype.where to make sure it takes Indexing into account.
+
+	Indexing
+		Since any change to a table will corrupt the index, it's better to have it run on the ID of the row.
+
+	FQL (this workshop) will resemble the way we interact with databases later on using Mongoose DB.
+
+	
