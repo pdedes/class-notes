@@ -40,6 +40,11 @@ ___________
 		Array.prototype.forEach()	--> executes a function once per array element
 
 		Note: When utilizing the functional programming paradigm, keep note of what it is you are working on. These functions all work on arrays, and may return new arrays or alter them in place. If you are working on Objects, you'll need to figure out a way to transform your object into a workable array. For example, using Object.keys(theObj) will deliver an array of keys that you can then work on.
+
+	obj.sort(function(a, b) {}) can sort anything as long as it can make a mathematical comparison between the two, which in this case we are doing by passing the comparator function to it.
+
+		The function here simply says, find the difference between the values of a[attribute] - b[attribute];
+
 ___________
 
 Twitter JS with SQL Backend
