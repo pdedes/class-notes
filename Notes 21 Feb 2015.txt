@@ -29,6 +29,16 @@ ___________
 
 	FQL (this workshop) will resemble the way we interact with databases later on using Mongoose DB.
 
+	DON'T FORGET... Use functional programming whenever possible! Take advantage of Javascript's good array/object transveral functions. If you're writing a for(var i = 0; i < array.length; i++) loop on arrays, you should automatically think --> Functional Programming.
+
+		Array.prototype.every()  	--> performs a check on every element
+
+		Array.prototype.filter()	--> pushes filtered items to a new array
+
+		Array.prototype.map()		--> creates a new array that has transformed every element based on a function
+
+		Array.prototype.forEach()	--> executes a function once per array element
+
 ___________
 
 Twitter JS with SQL Backend
