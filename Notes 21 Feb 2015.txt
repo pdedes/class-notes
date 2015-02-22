@@ -29,4 +29,91 @@ ___________
 
 	FQL (this workshop) will resemble the way we interact with databases later on using Mongoose DB.
 
-	
+___________
+
+Twitter JS with SQL Backend
+___________
+
+	The point of a database is to have persistent data. A database has its information live past the next reboot.
+
+	Model
+		data persistence
+		data synchronization
+	View 
+		front-end view
+		user presentation
+	Controller
+		The "Playmaker"
+		Managing comms between M & V
+		Essentially defines the behavior of your applications
+
+
+	Text files could give us persistence, but a DBMS gives us higher-order functionality including searching, hierarchy
+
+	We need a communication line from Node to the database. This is the job of the ORM. An ORM serves relational databases, an ODM serves Document (noSQL) databases.
+		
+		DB 			ORM
+		SQL: 		SQLize
+		MongoDB:	Mongoose
+
+	An ORM should give you a programming language interface to database querying functions
+
+		var Sequelize = require('sequelize');
+		var sequelize = new Sequelize();
+
+		//Here we define and model how the Tweet will look in the database
+		var Tweet = sequelize.define('Tweet', {
+			text: Sequelize.STRING,
+			USERNAME: Sequelize.STRING
+		})
+
+
+		//Databases operate asynchronously, we need a callback function
+
+		Tweet.find({where: {text: "sample tweet text"}})
+		.done(function (err, tweets) {
+			console.log(tweets);
+
+			// within here we need to pass the data back to the controller
+			// we need to then pass that to the view to build the template
+
+		})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
