@@ -63,7 +63,7 @@ ___________
 
 	We need a communication line from Node to the database. This is the job of the ORM. An ORM serves relational databases, an ODM serves Document (noSQL) databases.
 		
-		DB 			ORM
+		DB 		ORM
 		SQL: 		SQLize
 		MongoDB:	Mongoose
 
