@@ -1,0 +1,121 @@
+________
+
+WIKISTACK Review
+________
+
+	Generators are useful because they capture many best practices for app construction/infrastructure. They can be modified however as needed.
+
+		In our case, we use nodemon, replace jade with swig, etc.
+
+	How does the request travel through the browser and Exrpess?
+		>bin/www/ which makes a command similar to telnet localhost:3000
+		>It passes through the rest of the app.use/get middleware to get processes
+		>It serves an HTTP response to the browser
+			Note: bin/www/ defaults listening port to 3000 if it's not otherwise defined. The line in bin/www is actually setup to work with heroku if you were to push it there.
+
+	A Swig template is like a 'mad lib' with blanks that need to be completed.
+		>A swig block works with object inheritance. Use the {% block keyword %} to replace the template pieces properly
+		>Swig filters, helps removes the logic from the template to clean up the layout/html a bit and not convolute it too much. The less code in your templates, the easier it is for designers to work with.
+			The syntax {{ page | page_filter }} can be thought of as a function with an argument being passed to it: 
+				page_filter(page);
+		>You do not necessarily need to pass an object to res.render, but if you do, you'll need to use dot notation if you do.
+			res.render('show', {doc: page})  ---> {{ doc.page }}
+			res.render('show', page)  ---> {{ page }}
+
+	Mongoose & Models
+		Mongo schema enforces control on the database at the application level. One way to store data strictly is to implement a middleware node application that handles all of the I/O traffic to the database.
+
+		Mongoose can enforce validation, but MongoDB does not care about the input values.
+
+		A virtual creates a property on the page that acts as a function. It is a Uniform Access Principle. It acts similarly to the Object.defineProperties() function.
+
+			Object.defineProperties(myObj, {
+				full_name = {
+					get: function () {
+						return this.first_name + " " + this.last_name
+					}
+				}
+			});
+
+			^^^This can help make URLs easier to read for users but can cause some confusion for development. Is it a property? Is it a method?
+
+	Note: Download EMMET
+	
+	Router
+		Helps us run a function that we want to based on the link/section of the page the user is trying to access.
+
+		When we add the form (using shortcuts from Emmet), we also need to establish our POST route to capture from the form, enter to the database
+
+	Debugger Middleware
+
+		Placing this middelware can help us quickly gauge the HTTP requests and contents being passed between the server and application.
+
+			app.use(function(req, res, next) {
+				console.log("----NEW REQUEST----");
+				console.log("params: " + req.params);
+				console.log("body: " + req.body);
+				console.log("query: " + req.query);
+				next();
+			});
+
+	Requiring files
+		>If you require a directory in node, it will by defaul load the 'index.js' file in that directory
+
+	Statics
+		>similar to Object.prototype.method function assignments? But look up the difference. You can assign this in the model file.
+
+	Timing the Save to the Database
+		p.save();
+		res.redirect("/");
+
+		If you want to guarantee that the saved item is considered after the redirect, you need to set up the redirect as a callback within the save, to ensure they happen sequentially in an async environment.
+
+			p.save(function() {
+				res.redirect("/");
+			});
+
+	Half the battle is getting the communication between HTTP events & the database to occur properly.
+
+	Edit/Delete a page
+		NOTE: Deleting a page >>> SHOULD BE DONE by a POST action, because web crawlers will actually follow all links on a site, and if your delete button is set up as a get request/hyperlink, the crawler can actually trigger deletion. A post request is the safe request method for deletion.
+
+		CRUD requires seven routes to fully work
+
+			POST Create
+
+		The Edit page will look very similar to the Add Page, except we fill the form with the values that we have already in the database. You can use the HTML value="value" assignment.
+			>Alternatively, instead of creating a separate form, you can modify the Add form to have an editing mode, and pass that variable 'true' to the res.render function.
+			>If passed values are empty, swig will skip and leave them blank, which is useful when reusing forms.
+
+
+	Mongo Functions
+
+		models.Page.findOneAndUpdate({_id: req.params.id}, { $set: req.body });
+
+		models.Page.findByIdAndRemove({req.params.id});
+
+	What to take away from Wikistack
+		Get a list of documents
+		Show them Again
+		Update them
+		Delete them
+
+	HTTP has twenty verbs, but in truth most browsers only support two (GET & POST). Put is not well supported.
+
+		GET; Should be Item Potent --> If you give the same input, you always get the same output. GET also has a data limitation of 10^24.
+
+		POST: Is NOT Item Potent --> Every time you post, you change the state of the underlying system. Everytime you post, something will change and you will receive different results.
+
+		One of the reasons this exists is to give information to a browser on whether an interrupted transaction successfully completed, or whether it needs to be executed again.
+
+		See more @ the Restful Cookbook...
+
+
+
+
+
+
+
+
+
+

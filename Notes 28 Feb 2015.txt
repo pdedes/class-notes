@@ -1,0 +1,55 @@
+_______
+
+Mongo SCHEMA Design
+_______
+
+	There are no JOIN semantics at the DB level in Mongo. You must join at the application level, not the database level
+
+	You can however, use much more complex structures into your Mongo docs.
+
+	Mongo DB stores JSON docs, which support array/object function
+
+		Note: Friend Feed rigged a Mongo-like implementation in SQL by storing JSON objects in strings within SQL tables (pre NoSQL)
+
+	Serialization: the topic of conversion of data in a mutually intelligable manner between applications.
+
+		JSON.paramify(object) <---> JSON.stringify(object)
+
+	Cardinality in NoSQL
+		1:1 Here we have two guidelines
+			One-to-Few
+
+
+			One-to-Many
+				Standard is to put the foreign key on the collection that is the 'many', similarly to where the foreign key is stored in SQL.
+
+				You could implement a 'bucketing' strategy to invoke the idea of recency and help speed up searching. I.e. store an array of the last blog post in arrays.
+
+		Many:Many In SQL we need an intermediary, or JOIN, table to relate the two tables.
+			SQL
+				Moves and Actors are a Many:Many relationship. We need a JOIN table "Roles" to combine the two.
+
+	Storage Limitations
+		SQL
+			1. Only one 'scalar' value at an intersection of row and column
+			2. No duplicate data wanted
+		Mongo
+			1. We can store as much as we want, but we want to retrive the most efficient amount to return back, because each call is a roundtrip to the db.
+			2. With embedding, you need to ensure that the links you have between collections are consistent. This is an understood tradeoff between relational (enforcing this) vs. NoSQL, which does not enforce this.
+			3. Documents can be 16MB each
+
+	Offline Situations
+		Each type of database has a stack of actions logged. If a db goes online, it will 'replay' the transactions which have not yet been executed.
+
+	Implementing the IMDB Relational database into NoSQL
+		Movies:Movie_Genres is One:Many
+			NoSQL --> One to Few
+		Movie_Directors:Movies is One:Many
+			NoSQL --> One to Few
+
+			>Think of the movie page, and how the director's info would be pulled from an embedded short/director
+
+		The IMPORTANT thing is, you want to avoid pulling in too much data. If you want to build a movie page, you only want to pull in the minimum amount of data to build out the director details, and if that's a short list, you can embed the info in the movies dataset.
+
+	Caches
+		Google has their own indexed version of the internet that they execute their queries on.

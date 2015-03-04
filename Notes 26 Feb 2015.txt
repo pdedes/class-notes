@@ -1,0 +1,254 @@
+__________
+
+Twitter DB & Sequelize Workshop
+__________
+
+	Models
+		Lower-case sequelize is your particular database and your way of interacting with it
+			sequelize = new Sequelize('twitterjs', 'roo', null, {
+				dialect: "mysql",
+				port: 3306
+			})
+		Upper-case Sequelize is the library
+
+		.define is establishing the Table (schema)
+
+		var Tweet becomes a representation of the Tweets table. They aren't Tables per se... they are JAVASCRIPT interpretations of SQL tables
+			var Tweet = require('./tweet.js')(sequelize);
+
+			^ A table 'generator' that passes our instance of the database (sequelize) to the module.export 'function' of the model. This will build our table.
+
+	Sequelize
+
+		How do we establish 'cardinality'? We use the following to establish this as well as foreign key assignment.
+
+			User.hasMany(Tweet);
+			Tweet.belongsTo(User);
+
+		When we originally console.log the query, a very ugly array of objects is returned from Sequelize. There is a method we can use ('get') to clean up the return value.
+
+			console.log('tweets', tweets.map(function (tweet) {
+				var vals = tweet.get();
+				vals.User = tweet.User.get();
+				return vals;
+			}))
+
+			getTweets is defined specifically with the line... User.hasMany(Tweet);
+
+		Sequelize uses the tables and the cardinality rules to build 'magic' formulas for you, i.e. user.getTweets()
+
+		If we're looking for one thing specifically, we want to use .find() instead of .findAll(). It will be a quicker database query, You can pass along a specific ID that will speed up the search.
+
+
+	Updating our Application Routes
+
+		('/') Root Route
+
+			A promise is a convention that says, do this once the async action has completed
+				.success
+				.then
+				.failure
+				.done
+
+			Promise style syntax helps decouple the async process from the following handling. You can kick off an async process, and modularize the handling later on.
+
+			We can't simply return the query results to return to a variable, because of the asynchronicity of the database call.
+
+		Accessing variables from the URL
+			req.params - from the middle of the URL
+			req.body - from a hidden post
+			req.query - a ? query at the end of a URL
+
+	On the Submission Form...
+		The post request is being parsed. The request body name will contain the id/tags from the HTML layout. When the body request is intercepted by our server, the bodyparser breaks it out into JSON. 
+
+		The fix here is to update the input name field. In this case input="name" to input="tweet" << 'tweet' was defined in the model, and therefore is what the database is looking for.
+			>Alternate fix is to keep the 'req.body.text' search, but leave 'text' in the html submit request
+
+	NodeMon
+
+		Can be given a flag to also restart on html updates.
+
+
+	The Fullstack
+
+		The URL is fired
+		The BROWSER then forms the GET request (important to note that with AJAX we'll be forming these on our own later on)
+		Middleware intercepts the GET request, and parses it
+		The app then hits the public static directory
+		We reach the routes, which interpret the URL that was requested, and match it to the routes list
+		The database is queried, and the promise/callback is registered (event handler)
+			...Node waits in the background...
+		When the async database call is returned and finished, control returns to express to execute the next event
+		Sending HTML Response to the browser via res.render, that was built using the templates with the data we retrieved
+
+	MySQL
+		You can reseed the database with the following command
+			$ mysql - u root "twitterjs" < seed.sql
+
+__________
+
+Mongo, Schema
+__________
+
+	SQL, PostGRES, etc. are Relational databases
+
+	Navigational Databases are even older technology (the web fits this paradigm)
+
+	Relational developed at IBM
+		>The table rows are related via foreign keys
+
+	NoSQL
+		>Helps us solve a lot of problems presented in SQL
+
+		Mongo DB stores 'documents' instead of tables/rows
+
+		Documents are JSON objects. A Mongo DB is collections of documents.
+
+		Mongo is Schema-less, has advanced query capabilities.
+
+	Mongo, what is it good at?
+		Flexible Schema, lends itself to Agile development
+			>It does not validate the data you're pumping
+		Capturing unstructured data
+			>Many APIs may not adhere to a definite structure
+		Scaling: Replication & Sharding
+		Specialized Use Cases
+			>logging users/events
+			>content management (Forbes)
+			>Good GeoSpatial Support
+			>Real-time analysis (good I/O speed)
+
+		It has low-impedence with Javascript, i.e. it's speaking the same language - no translation necessary
+
+	Mongo, what does it suck at?
+		Transactional data (think banking, accounting)
+			>ACID Compliance: the capabilities of a transaction
+				Atomicity; happens all at once or not at all
+				Consistency; all users can view it
+				Isolation: multiple transactions running at the same time, they all see the same data
+				Durability:
+
+	CAP THEOREM
+		Databases can no longer run on one machine
+
+		This is a spectrum of decisions to make about your Database and Application
+			Consistency
+			Availability
+			Partition Tolerance
+
+		The CAP Theorem states that, eventually, the different systems hosting the databases will become disconnected and out of communication... how will your DBs and application respond to that situation?
+
+			>A bank needs consistency first
+			>Social media needs to be 'up', it doesn't matter if you can't see the East Coast posts from Los Angeles
+
+		Mongo has been heavier in terms of database storage in the past, but 3.0 has improved this 5-10x
+
+	Analogies
+
+		Excel	Mongo
+		Worksheet	Collection
+		Row 	Document
+		Column	Field
+		''	Index
+		VLOOKUP	Embedding
+
+	Characteristics
+		Every time a document is created, there is an _id ObjectID number created with the document
+
+	Encryption (aside)
+		bCrypt
+		MD5	(this is a program you can install) > not as secure anymore so it has been left behind
+
+	Commands
+		db.collection.update({docType}, {change})
+			>Be careful, you may overwrite existing fields. You should use $set syntax to protect against this
+
+		db.collection.remove({docType})
+
+	Querying
+		Supports matches
+		Operators (<=, >=) --> ($lte, $gte)
+		Booleans
+		Arrays
+		RegEx
+
+	Index
+		Tradeoff you get for the speed is the cost of space, and the necessity to update it if your database has changed over time
+
+		In Mongo, you can also relate documents via the Primary & Foreign Key paradigm
+
+		Use the .explain() tool to investigate what the query/command is doing
+			>On a search, it'll tell you stats on the search, i.e. it searched 50,000 records to find the 5 you wanted
+			>Once you .ensureIndex, it'll tell you the type of cursor is used, the reduced performance
+
+		An index can get a performance improvemant from O(n) to O(log(n))
+
+		cursor will let us know what type of search algorithm is being used, 
+			Basic (non-indexed) is BasicCursor, 
+			Numerical index could be bTree
+			Text could be a dictionary type cursor/index, furthermore it could be an intersection of sentence words
+			Lat/Long for Geo-Spatial data
+
+	Tools
+		Mongo exists in the console, but there are other tools...
+		Robomongo (GUI)
+		Mongo Hacker (enhances the shell)
+		Mongoose (ODM) and it maps JS Objects to JS Documents.
+			It has less work to do than SQL ORMs
+			Schema Modeling/Validation (enforces it for an entire group)
+			Hooks; code that runs pre/post action
+			Class and Instance Methods
+			Getters/Setters; fullName returns concatenation of first and last
+
+	Coding Flexibility in Mongoose
+		>Even though you define a schema in Mongoose, you can update the schema definition if need be to add something new
+		>Everytime you interact with the database, it's by nature async, so you'll be passing functions/callbacks/promises
+
+		Mongoose lives INSIDE the Node.JS process. Mongoose uses the Node Mongo DB driver
+
+		27017: Standard Mongo Port
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
