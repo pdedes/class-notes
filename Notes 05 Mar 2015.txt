@@ -1,0 +1,131 @@
+__________
+
+BACKEND TESTING
+__________
+
+	Understanding code behavior
+	Reapplying tests in regression
+	Did our new feature break something else?
+	Providing documentation for the code
+	Improving confidence in the work
+	--------
+	History of testing
+		>Manual testers --> recording --> unit testing --> Test Driven
+
+	Automated Testing !== Test Driven Development
+		TDD is one element of the Automated Testing spectrum
+
+		TDD: Writing the test before the implementation code
+
+	Coding should be simple
+		All you need is an assertion function
+		The assertion will do nothing if it passes, or throw an error if it fails
+
+	Testing Pyramid
+		  /Accept. Test\	 // testing entire user stories (combos are vast)
+		 /---Service----\	 // large component testing (route testing)
+		/------Unit------\   // every single component in isolation (function)
+
+	Fullstack Applications
+		You are writing two separate applications in essence
+			1. Front-End
+			2. Back-End
+
+	Mongoose Model Testing
+
+		Validations are used to preserve data quality. If validations fail, they will return an error to you.
+
+		Methods & Classes
+			Mongoose applies methods to prototypes via the 'method' prototype part
+
+				Dog.methods.bark
+
+			When you query the database... Mongoose uses the methods to assign items to the class
+
+				DogModel.findOne({
+					name: 'pete',
+				}, function(err, theDog) {
+					theCat.eat();
+				})
+
+				The method is not on the schema, it's on the returned data prototype
+
+		Pre and Post actions can be performed similar to Middleware. In other words, take 'the following' actions when...
+
+			DogSchema.pre('save'), function(next) {
+				this.groom();
+				next();
+			}
+
+			// This will groom before the save occurs
+
+		Testing can get out of hand quickly. You can end up with a very long lengthy list of testing.
+
+			Method Testing: an organizational hierarchy applied to the tests. This is what the 'describe' blocks were in Jasmine TDD.
+			BEWARE: if a test requires asynchronicity, there are modes to make Jasmine wait for the function to occur
+
+				describe('Dog model', function () {
+					describe('validations', function() {
+						it('should validate presense of name', function () {
+							var k = new Kitten()
+							k.validate(function(err) {		//asynchronous - you need to control for this in Javascript!!
+								console.log(err);			// Dog.name has val error passed
+								expect(err.errors).to.have.property('name');
+								done();						// This is how we tell the testing suite that you are done registering expectations
+							})
+						});
+
+						it('should validate scratch probability')
+					});
+					describe('methods', function() {
+						describe('eat', function () {
+							it('should return yum', function () {
+								var k = new Kitten() 		//declare the model
+								expect(k.eat()).to.equal('yum');	// Syntax
+							})
+						});
+						describe('groom');
+						describe('scratch', function() {
+							it('should return ouch when random # is > P(scratch)', function() {
+								var originalRandom = Math.random //Save a reference to the function
+								Math.random = function() {
+									return 0.5					//Here we force it to a value by redefining it
+								}
+
+								var k = new Kitten( {
+									scratchProbability: 0.6
+								})
+
+								expect(k.scratch === "ouch");
+								Math.random = originalRandom;	//Reset the formula we changed
+							})
+						});
+					});
+					describe('hooks', function() {
+
+					});
+				})
+
+
+		Router Testing_____
+
+			'supertest' is module for testing HTTP requests
+
+			res.body is from the perspective of the client... it's a reply to the res.json(converstion) that occurs in the server)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
