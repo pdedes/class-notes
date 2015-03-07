@@ -1,0 +1,218 @@
+____________
+
+TESTING Workshop Review
+____________
+
+	$git diff  --> shows the differences since our last commit
+
+	Node testing Modules
+		chai
+		chai-spies
+		supertest
+		chai-things
+
+	For any test, we need to 
+		1. Set up our environment
+		2. Run the function in question
+		3. Assert something about the function and it's results
+
+	beforeEach is a way to introduce DRY principles into testing scripts
+
+	Statics & Methods
+		A static is assigned to a specific Model
+
+	Classes & JS
+		class definition
+		class usage
+
+		Things we put on the Class are STATICS
+		Things we put on the Prototypes are METHODS
+
+		Cat.prototype.meow = function () {
+			//what is 'this' here?
+			//this is the instance of the cat
+		}
+
+		Cat.meow = function () {
+			//what is 'this' here?
+			//This is the Cat function itself, not an instance
+		}
+
+		A static is a function that is on the model itself that can be attributed to many things, but can't be called on an instance
+			>pageSchema.statics.findByContributer
+			>pageSchema.statics.getArticleCount
+			>pageSchema.statics.pruneAllFlagedPages
+
+		A method is a function that is executed on an instance of the prototype 
+			>pageSchema.statics.numPageTags
+			>pageSchema.statics.revert
+			>pageSchema.statics.flag
+
+	Before vs. BeforeEach - Research
+
+	Good practice
+		before(function(done), clear database) to remove all testing data from the collections
+
+	getSimilar Assertions
+		You need to include a plug-in to get Omri's solution to run (i.e. chai-things)
+
+		The getSimilar issue (undefined) arose because of a unique restraint on the Mongo Model.
+
+	Route Testing with Superagent
+		Testing inbound and outbound HTTP requests and responses
+
+		'end' sounds like a verb, but would be clearer if it were called onEnd, which means run it when everything before it ends.
+
+	Whenever possible with testing, you want to avoid saving materials to the database. This causes speed gains since writing to the DB is expensive.
+		-An example of this is calling .validate() instead of .save()
+
+
+____________
+
+The Front-End: HTML/CSS
+____________
+
+	Digital products are for PEOPLE. Design is incredibly important today.
+
+	CSS/HTML both do not have a solid grid on the window. CSS is not a language, rather a list of options to consider and alter.
+
+	HTML Doc Structure
+		<!DOCTYPE html> Informs the browser to use the html interpreter to read this document versus a JSON for example.
+			>Ensure this is the first line in the doc
+
+		<meta charset='utf-8'> 
+			>meta tags assist web crawlers
+
+		Each element of HTML is essentially a box, for the most part. They become nested within one another. Some exceptions include <a> <p> <br>
+
+	HTML4 was 'Div Soup'; generic boxes all over the place, and using CSS to organize this mess. HTML5 was written with the understanding that more than just browsers read pages now.
+
+	HTML5 >> Tags themselves have meaning & structure
+		-Improved comms (real-time)
+		-Offline storage
+		-Native video support via <audio>, <video>, <camera>
+		-performance
+		-Gaming via <canvas>
+
+	In HTML5, <div> should only be used for styling containers. There are better elements for organizing: <nav> <article> <section> <aside> etc....
+
+		Some rules, article goes inside section
+
+	Inline v. Block v. Inline-Block
+		Inline > elements stay on the same line and act like text. You cannot specify width or height of these elements.
+			EX: <a> <span> <b> <em> <i> <cite> <mark>
+
+		Block > force line breaks before and after, takes up 100% of the width, but height is determined by the content.
+			EX: <p> <article> <section> <form> <header> <nav> <li> <h1>
+
+		Inline-Block > Is a hybrid of the other two. It is like a block element, except it does not line break before and after. Respects bottom/top margins and padding, and height/width.
+
+	Programming Defensively: You could use 'shivs' which will replace your modern html5 code with equivalent html4 code for those users. It will come at performance costs.
+		IE applies this via html conditional comments...
+
+			<!-- [if lt IE 9]>
+				<script> Insert Shiv here </script>
+			<![endif] -->
+
+	Microsoft was years ahead of the W3C during the early browser years... Think of the regulations process that could take months to pass.
+
+	HTML tags are interchangeable, and can be made to operate like one another, if needed.
+
+	Header tags are not about font size, but are used to symbolize prominence. This can be important to a crawler, for instance. You can use CSS to modify the sizes so that even an h1 appeared smaller than h2 for example.
+
+	Common Font Styles
+		Bold/Italics
+			<strong>	Bold (don't use the <b> tag, CSS determines how to deliver the 'strong' look)
+			<em>	Emphasis/Italics	 (<i> has been repurposed to the icon tag)
+
+		Text color
+			#title {color: red}
+
+		Font(CSS rule needed)
+			#title {
+				font-family: arial, sans-serif;
+				font-size: 14px;
+				font-weight: bold;
+			}
+
+			Alternative SHORTHAND
+			font: bold 14px arial,sans-serif;  // beware that the order is important here if you choose to use them.
+
+	The Box Model
+		Understand that the width and height are just the inside box
+		Margin and border do not get affected by the background color
+		Margin does not have a color
+		//Potential interview question
+
+	Bootstrap sets everything to border-box by default. If you look at the bootsrap.css source file, and search for 
+		* {
+			box-sizing: border-box;
+		}
+
+		This can cause issues since it will aggressively change all elements to be border-box
+
+
+	INTRO to CSS
+
+
+		.inputbox[type='text'] {}   // Nice way to target input boxes by their attributes alone, for example radio buttons.
+
+		The cascading nature of sheets can cause problems.
+			Specificity & Last Rule: In general the more specific rule will apply. The most specific selector is "id". If two equivalent rules apply, then the last rule declared will be applied. The specificness is calculated via a background rule. A 'div' tag is very non-specific, class is a bit better, better yet is class & attribute, and top is 'id'.
+
+			NOTE: PLACE your cutomized styling AFTER Bootstrap
+
+			>if you were to want to custom a bootstrap button
+
+		Inhertance: children elements taking on the parent attributes by default.
+			Some styles are inherited
+				back-ground color
+				font
+
+			Some are not inherited (but can be enforced using the 'inherit' keyword)
+				width
+				border
+
+		Sizes
+			All sizes must have units
+				Absolutes
+					px; relative to screen (most common)
+					pt; 1/72 of an inch, useful for print since you know exactly what it will print to in the real world
+				Relative Values
+					em
+					%; this will use the percentage of its parent to calculate, so this can actually cause a run-off that you don't expect
+
+		Color
+			hexadecimal
+			RGB
+				Useful if you want to specify translucency
+			Color names
+				Out of style, how can you specify millions of colors with actual names
+
+	SASS --> Review the Documentation. Modernizing CSS.
+
+		SASS gives us the opportunity to use variables. For example, you can save your primary color and reuse it.
+
+			$font-stack: Helvetica, sans-serif;
+			$primary-color:#333;
+
+			body {
+				font:	100% $font-stack;
+				color:	$primary-color
+			}
+
+		Nesting allows us to avoid the hellish listing of CSS attribute targeting
+
+			'&' in SASS is similar to 'this' in JS. It will replace the ampersand with the item it is nested in.
+
+		You can Import separated CSS files
+
+		Mathematical Operators
+
+
+	Use Sass & CSS to rebuild the grid of Bootstrap. Write the SCSS or SASS code to make the HTML file look the way it should.
+
+
+
+PS: REVEAL.JS is how the presentation was created
+

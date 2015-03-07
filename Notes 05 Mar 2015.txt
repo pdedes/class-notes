@@ -114,6 +114,14 @@ __________
 			res.body is from the perspective of the client... it's a reply to the res.json(converstion) that occurs in the server)
 
 
+		Testing
+
+			Our testing suite will give us the tools we need for this task. We can:
+
+				Categorize or group tests (using describe)
+				Set up common code or data across different tests (using beforeEach)
+				Declare an individual test (using it)
+				Assert (i.e. confirm or deny) results within a test (using expect)
 
 
 
