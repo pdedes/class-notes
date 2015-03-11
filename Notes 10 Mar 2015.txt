@@ -1,0 +1,83 @@
+__________
+
+CSS & SASS Review
+__________
+
+	To ensure multiple tag classes are kept together and in the same order, you chain them using ".".
+
+	Gray Hexidecimal trick: use three letters #111, #222 ... #eee
+
+	Position:
+		Relative:	Makes this element the [0, 0] on a plot, and elements relative to this will work off of that
+		Absolute:	Pinned to Document
+		Fixed:	Pinned to the browser window
+
+		By default there isn't a position property
+
+	For navigations, its a common design pattern to make them from unordered lists, and in order to do that you need to override <ul> and <li>
+
+	Center anything that's a block: 
+		0 top and bottom margin & auto margin for the sides...
+			--> margin: 0 auto;
+			When you auto the side-margin, you can think of it as equal physical forces on the left and right keeping it centered
+
+	Centering text vertically, use 
+
+		nav {
+			li {
+				line-height: (the height of the navbar);
+			}
+		}
+
+	You can make the entire anchor a block, instead of just the hyperlink within the Navigation bar...
+
+		li {
+			a {
+				...
+			}
+		}
+
+	Setting a width to 100% makes content fill the box that it is placed in. It's a good way to get the materials to respond to their resized containers.
+
+	The Float & Clear problem...
+		When you float an element, the parent element doesn't count it in it's own height any longer. Normally the parent grows to take into account the children. Therefore, if everything in the parent is floated, the parent's height will collapse since it doesn't count them.
+
+		You need the clear fix trick to get around this.
+
+			Create an element, that forces parent to take it's height into account. Add a non-floated element directly below the rows (ensure this). The row will then expand based on the normal css rules.
+
+			clear: both property says, there may not be a floated element to it's left or right.
+
+		In SASS, you can do this with a mixin instead of creating the wedge div in the html.
+
+			@mixin clearfix() {
+				&:after {
+					clear:both;
+					display: block;
+					content: " ";
+				}
+			}
+
+		Alternative...
+
+			.row:after {
+				overflow: auto;		//property specifying what should happen when the content is bigger than it's container. Setting it to auto states that the container will grow with the content.
+			}
+
+	Columns
+
+		To avoid the spillover effect when you include padding, you should use...
+			box-sizing: border-box;
+
+
+
+
+
+
+
+
+
+
+
+
+
