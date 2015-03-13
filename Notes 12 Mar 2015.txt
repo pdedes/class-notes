@@ -1,0 +1,132 @@
+_____________
+
+Responsive Web Design
+_____________
+
+	A website responds and changes itself automatically to the dimensions of the viewer's browser.
+
+	Power has shifted between the user and the developer... you have to cater to the user in as many ways as possible, including working with their devices, and not disrupting their experience.
+
+	Goal of a responsive website: Make the user feel welcome regardless of how they get there.
+
+	Two steps to making a site repsonsive:
+
+		1. Add Meta Tag
+
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+								  ^^^This uses the devices width as our base
+
+		2. Add Media Queries
+
+			@media screen and (max-width: 980px) {
+				#pagewrap {
+					width: 94%;
+				}
+				#content {
+					width: 65%;
+				}
+				#sidebar {
+					width: 30%;
+				}
+			}
+
+		NOTE: These media rules will overwrite your defaults a la Cascading nature of CSS. You'll need to set these at the end.
+
+	How to Use Media Queries...
+
+		Some things should be flexible & fluid, and others should not be. For example, with 
+
+		In SASS, you can put together media queries in it's own definition and it will take care of the compiling.
+
+	Some Examples
+
+		Min-Width
+
+		Min-Width && Max Width <-- A band between two sizes
+
+	Resolution plays ia big role. Higher resolution devices are the norm. The latest iPhone has 4x pixels as the original. 
+
+		CSS developers actually still use the original px size, but the browser on the device does the arithmetic for you.
+
+			480px on a new device actually occupies 4x that 1920px...
+
+	_____Solution to the Workshop______
+
+	Media queries and the three Bootstrap tags
+
+		You have multiple classes defined, but the media queries act like an if/else controls statement... they cause one set of characteristics to exist at certain screen sizes, and others to not exist.
+
+	MEDIA QUERIES = IF/ELSE Statements of Responsive Design
+
+	We find ourselves copy/pasting quite a bit of similar code however when we define the media queries the first time.
+
+		@media (min-width: 640px) and (max-width: 1024px) { 
+			html { 
+				font-size: 112%; 
+			}
+
+			@for $i from 1 through $grid {
+				.col-md-#{$i} { 
+					width: percentage(($i) / $grid); 
+					float: left; 
+					box-sizing: border-box; 
+				}
+			}
+		}
+		 
+			/* Large screens (1024px) */
+
+		@media (min-width: 1024px) { 
+			html { 
+				font-size: 175%; 
+			}
+
+			@for $i from 1 through $grid {
+				.col-lg-#{$i} { 
+					width: percentage(($i) / $grid); 
+					float: left; 
+					box-sizing: border-box; 
+				}
+			}
+		}
+
+		You could use a MIXIN to actually induce a more DRY approach here...
+
+			@mixin column_def($size) {
+				@for $i from 1 through $cols {
+					.col-#{size}-#{$i} {
+						float:left;
+						width: percentage ($i/$cols);
+						box-sizing: border-box;
+					}
+				}
+			}
+
+			@media (max-width: 320px) {
+				@include column_def('sm');
+			}
+
+			@media (min-width: 640px) and (max-width: 1024px) {
+				@include column_def('md');
+			}
+
+			@media (min-width: 1024px) {
+				@include column_def('lg');
+			}
+
+		You can further reduce this using @each loop (see solution)...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
