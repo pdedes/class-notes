@@ -1,0 +1,47 @@
+_____________
+
+TRIP PLANNER
+_____________
+
+	SCHEMAS plug nicely into Models. It's a 'soft' cap on Mongo, helping us enforce some conventions/validations into our data. It can also be used to invoke classes in our data seeding.
+
+		app.use(express.static('/bower_components', __dirname + "/bower_components"))
+
+		^^This won't expose the files at the expected URL... you need to give a relative path that helps parse the URL first...
+
+		app.use("/bower_components", express.static('/bower_components', __dirname + "/bower_components"))
+
+	HTML <source> and <href> links are interpreted as strings. There is nothing special about the link="/folder/sub-folder/file.js" quoted text, it will become a request from the client made to the server.
+
+	NOTE: Omri caused a start-loop with the SASS middleware... Because Package.json was set to observe "css" files, and because SASS is checking these files to compile them, the server was restarting each time the scss is compiled and updates the public css file. This was resolved but updating the "start" key of package.json to observe...
+
+		"scripts": {
+    		"start": "nodemon -e html,scss,js ./bin/www"
+    	}
+
+    View Port Height
+
+    	// This calcualtes the current window's height, and subtracts 50 px. This changes with resizing.
+
+    	#map-canvas {
+    		height: calc(100vh - 50px);
+    	}
+
+    SWIG also has an "INCLUDE" function which is helpful for
+    	-Sectioning off elements of our page, such as Navigation, Footer, etc.
+    	-Maps
+
+    The Bootstrap Columns... the size you set is a $gt or equal to
+
+    If you get rid of 'rows' ensure you keep them identified as "clearfix" so you can apply that fix in the future.
+
+    Bootstrap provides 'panel' options as well
+
+    On the drop-down problem, we 'bounded' the drop-down by setting it's width to 100%. Which forces it to use only the space it's been given (which is odd because it was bigger before hand).
+
+    If you want the map to be the whole page, and can set it to be viewport width 100%, and then just treat the panels as normal columns that sit on top of it.
+
+
+    ASYNC w/ Omri
+
+    	
