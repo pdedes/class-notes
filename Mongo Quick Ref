@@ -17,7 +17,7 @@ MongoDB Quick Reference Guide
 		$ne 	not equal to
 		$eq 	equal to
 
-		$exists: true/false 	choose boolea
+		$exists: true/false 	choose boolean
 		$in: used to match one of several values we pass in an array format
 		$nin: matches values that are explicityly not in the passed array
 		$or: used to match one of several selector objects
@@ -62,11 +62,11 @@ MongoDB Quick Reference Guide
 
 		loves: {'peaches'} 	returns any document where 'peaches' is a value in the loves field.
 
-	Adding .pretty() to a shell statement will format the results in a readable fashion. This can be set to defaul if needed via Mongo config file.
+	Adding .pretty() to a shell statement will format the results in a readable fashion. This can be set to default if needed via Mongo config file.
 
 	UPDATING RECORDS
 
-		Be careful, using the .update() command in its simplesst form will overwrite the document COMPLETELY with the information you are inserting. Using $set after your query is the proper way to update documents in Mongo.
+		Be careful, using the .update() command in its basic form will overwrite the document COMPLETELY with the object you are passing. Using an UPDATE OPERATOR with your query is the proper way to update documents in Mongo, without overwriting.
 
 			WRONG way
 				
@@ -80,7 +80,16 @@ MongoDB Quick Reference Guide
 
 		All update operators work on fields, so there's no worry about wiping away entire documents if you utilize them, as there was if you omitted them.
 
-			
+		Update Operators:
+
+			$set
+			$inc 		increments by the stated amount (can be negative)
+			$push		adds a value to a field
+			$mul 		multiplies the value by the passed amount
+			$rename		renames a field
+			$setOnInsert 	Useful for setting defaults (note, upsert must be set to true)
+
+
 
 
 
