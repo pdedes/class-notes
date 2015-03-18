@@ -1,0 +1,135 @@
+__________
+
+jQuery
+__________
+
+	John Resig developed jQuery in College. It was incredibly popular starting in 2008, and had a profound effect. It combined and simplified 4-5 different challenging elements
+
+		Safari, IE, Mozilla all had different DOM manipulation APIs. They were similar but annoyingly different.
+
+		jQuery made finding, changing, deleting DOM elements easy.
+
+	It also makes talking to servers very easy.
+
+	Some additional elements added:
+		>Animation
+		>Transitions
+
+	jQuery coincided with the end of the traditional web, and pushed the internet into Web 2.0. Asynchronicity of the user's interaction with the browser.
+
+		jQuery made this accessible to everyday developers.
+
+	Example:
+
+		$('p').css('color', 'blue');
+
+			>> Is equivalent to...
+
+		jQuery('p').css('color', 'blue');
+
+		For the set of 'p' tags, make the CSS attribute blue...
+
+		Note: Use plunker for live jQuery testing
+
+		1. jQuery Selection
+		2. 
+
+	jQuery needs to wait for the Page (Document) to load!!! Don't forget this. jQuery will run the code as soon as it loads, but if you don't tell it to wait, elements that come into existence after it runs will not have the action performed on it.
+
+		$(document).ready(function () {
+			$('#ibm-founder').css('color', 'blue');
+		})
+
+			>> Is equivalent to...
+
+		$(function () {
+			$('#ibm-founder').css('color', 'blue');
+		})
+
+	Common traversal
+
+		.children()	-->	Returns an array of children DOM elements
+		.parent()
+		.first()	-->	Returns first child of a DOM element
+		.last()
+		.next()
+
+		samples...
+		$('div:first').children();
+
+	Common Actions
+
+		.text()	-->	Passing this blank 'gets', passing a parameter 'sets'
+		.html()
+		.css()
+		.val()	--> Gets the value of an element, usually a form
+		.append()
+		.appendTo()
+		.after()
+		.before()
+		.addClass()
+
+	Common Events: These are Asynchronous and require a callback function
+
+		.click()
+		.mousedown()
+		.mousup()
+		.hover()
+		.keypress()
+		.change()
+
+		$('div:first').children().on('click', function () {
+			..// If you were to console.log the Arguments list you'll see plenty of details about the click action
+		})
+
+			Some details in the callback, were secondary keys used? time stamps...
+
+		You can prevent the default event by
+			>Return 'default' from the callback
+			>event.preventDefault()
+
+		Click events keep logging events to a callback stack, you need to reload to get rid of them.
+
+		event.target() is a way to figure out where the click was delivered, i.e. which of the children received it? 
+			ALSO: You can pass 'this' to the callback to identify the target DOM element.
+
+
+	You can use the $ to search for tags
+
+		$(contains="text")  //Review this syntax
+
+	You can also pass html to the $, and it will return a Dom element that will exist, and then you can append it.
+
+		$("<h1>Hello!</h1>"");
+
+	jQuery doesn't return arrays, they are jQuery Sets. You cannot call actions on a Set element, only on the entire SET...
+
+	You can chain jQuery functions. They are returning 'this' after each method call, to keep the target object.
+
+	Avoid reselection (and avoidance of wasted CPU cycles) by finding an element and assigning it to a varible for reuse
+
+		var firstDiv = $("div:first");
+
+		firstDiv.on('click', function() {
+			firstDiv.css('color', 'blue')
+		});
+
+		WARNING ==> Assigning selections to a variable allows them to become out of sync with the current element selection. For example if you append elements to that div, the variable is now out of date with the actual set of divs.
+
+	console.dir($("div")); ==> This reveals the guts of the jQuery object, all of the actions, selectors, etc.
+
+		A jQuery object is returned with each returned jQuery command.
+
+	console.dir($);
+
+
+
+
+
+
+
+
+
+
+
+

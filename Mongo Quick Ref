@@ -1,0 +1,90 @@
+MongoDB Quick Reference Guide
+
+	Launch MongoDB in terminal using...
+		$ mongod --config /usr/local/etc/mongod.conf
+
+	show dbs 	displays a list of available databases
+	use [dbname]	loads the database with name [dbname]
+	show collections	displays document collections in the database	
+
+	Querying with Selectors
+		A selector is similar to an SQL WHERE clause. You pass an object {} along to the database, empty being 'return all'. If you restrict it with the following keys, it will add constraints to your search
+
+		$lt 	less than
+		$lte 	less than or equal to
+		$gt 	greater than
+		$gte 	greater than or equal to
+		$ne 	not equal to
+		$eq 	equal to
+
+		$exists: true/false 	choose boolea
+		$in: used to match one of several values we pass in an array format
+		$nin: matches values that are explicityly not in the passed array
+		$or: used to match one of several selector objects
+
+		Evaluation Searches
+
+			$mod 	performs a modulo evaluation on the field
+			$regex 	docs matching a regular expression
+			$text 	performs a text search
+			$where 	returns documents satisfying a javascript function
+
+		Note: All of these selectors can not only be used with .find(), but also with:
+			.remove()
+			.count() 	Returns the number of results of entered query
+			.update()
+
+		Note, for more Query Selectors: http://docs.mongodb.org/manual/reference/operator/query/#query-selectors
+
+
+
+		Sample Queries
+
+			.find({field1: valueA, field2: valueB}) 	Returns statements where both are true
+
+			.find({age: {$gte: 25}}); 	Returns documents where age is greater than or equal to 25
+
+			.find({has_passport: {$exists: true}}); 	Returns documents where the field "has_passport" exists
+
+			.find({
+				loves: {$in: ['apples', 'peaches']}
+			});
+
+			.find({
+				gender: "f",
+				$or: [{loves: 'apple'}, 
+					 {weight: {$lt: 700}}]
+			})
+
+				^^^Notice that $or recieves an Array of selector objects...
+
+	Mongo treats Arrays as first class Objects.
+
+		loves: {'peaches'} 	returns any document where 'peaches' is a value in the loves field.
+
+	Adding .pretty() to a shell statement will format the results in a readable fashion. This can be set to defaul if needed via Mongo config file.
+
+	UPDATING RECORDS
+
+		Be careful, using the .update() command in its simplesst form will overwrite the document COMPLETELY with the information you are inserting. Using $set after your query is the proper way to update documents in Mongo.
+
+			WRONG way
+				
+				db.horses.update({name: "Shadowfax"}, {rider: "Gandalf the Grey"});
+
+				// this will replace the entire document
+
+			CORRECT way
+
+				db.horses.update({name: "Shadowfax"}, {$set: {rider: "Gandalf the Grey"}});
+
+		All update operators work on fields, so there's no worry about wiping away entire documents if you utilize them, as there was if you omitted them.
+
+			
+
+
+
+
+
+
+
