@@ -1,0 +1,57 @@
+___________
+
+Trip Planner - Persistent UI Review
+___________
+
+	Getting the data in the front end is 
+
+		Swig Filter; by default it converts punctuation via a method called AUTOESCAPING, which is why we set this to false in the data load.
+		{{ all_hotels | json}} json is a swig filter for converting the mongo data into proper JSON format
+
+	Initial proposals
+		1. Use several Javascript files to break down code. They should be saved in public so they can be added to the html
+			>Days
+
+	HTML --> ID for single buttons  Class for groups of buttons
+
+	Day JS
+		var $addDay = $('#add-day')
+
+		$addDay.on('click', function() {
+			days.push({
+				restaurants: [],
+				thingsToDo: [],
+				hotel: null,
+				dayNum: days.length + 1
+			})
+
+			$addDay.prepend('<button></button>') 		<--- Passing html here is a bit ugly. There's a better way
+		})
+
+	The solutions here present the problem of mixing up model and view actions with persisted data
+
+	The jQuery Checklist:
+		1. Target
+		2. Action
+		3. Event listener (delegate or on if it's dynamically added to the DOM after load)
+		4. You can shut off listeners using .not()
+
+	Injecting the mongo ID into the drop-down menu values helps for searching/name changes etc. Using the 'hotel' ids is more robust since we don't have to parse strings, and also for business purposes - what if the hotel changes it's name?
+
+	Wiring up the Itinerary List
+
+		Challenge: maintaining synchronicity between model and the view, i.e. if I act on the view, is it reflected in the model.
+
+	The data load section that Zeke developed was an engineering decision: We want to loop through the hotels, restaurants, things to do once and load them in a hash table which is available via constant time O(1). Otherwise we'd have to loop through each time each time we clicked the plus button.
+
+	HTML Data attribute --> if you add 'data-' in front of any word, you can make your own attribute.
+
+	The part of the review where we work on making the day buttons rebuild the itinerary list is a good exercise in modularizing all of the code written until this point.
+
+	MAPS ---------
+
+		Peeling apart the starting point code is the key to making it a dynamically accessible map
+
+		
+
+

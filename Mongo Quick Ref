@@ -89,6 +89,21 @@ MongoDB Quick Reference Guide
 			$rename		renames a field
 			$setOnInsert 	Useful for setting defaults (note, upsert must be set to true)
 
+		Upsert: An action that updates the document if it exists, or inserts it if it does not exist
+
+			// This first example does not inclue an upsert, therefore nothing happens if the document does not exist
+
+			db.hits.update({page: 'teams'}, {$inc: {hits: 1}});
+
+			// The time we include {upsert: true}, forcing an action even if the document doesn't exist.
+			// Running this a second time will update the document we created the first time
+
+			db.hits.update({page: 'unicorns'}, {$inc: {hits: 1}}, {upsert:true});
+
+		By default, Update Operators execute once. To get a multiple-document execution statement, you'll need to use {multi: true}.
+
+		
+
 
 
 

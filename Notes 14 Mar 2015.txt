@@ -41,6 +41,11 @@ _____________
 
     If you want the map to be the whole page, and can set it to be viewport width 100%, and then just treat the panels as normal columns that sit on top of it.
 
+    The Router Bug… Or How to create an Open file Server via URI paths
+       request route '/stylesheets/tripPlanner.css'
+       ==>
+       look in: 'assets/stylesheets/tripPlanner.scss'
+       compile to: 'public/stylesheets/tripPlanner.css'
 
     ASYNC w/ Omri
 
