@@ -1,0 +1,96 @@
+___________
+
+TRIP PLANNER - Persistence Review
+___________
+
+	Models > Embedding Documents & Document Referencing
+		Referenced IDs; We can change our data in one canonical place, and changes will cascade downards.
+		Embedding offers a lean and fast data delivery model, but presents us an updating challenge down the road
+
+	Mongoose shows you the execution code for each method. This shows you under the hood what's going on - good exercise.
+
+	Express.Router() <-- calling the Router method calls a Router Constructor, which can be called independently.
+
+	The root of the dayRouter module is the root relative to where it is mounted in the application. dayRouter is an element of the middleware, so when it's bolted onto the /day/ path in the app.js section, then this root hits at '/day/' and not '/'
+
+	Middleware;
+		Express knows that if an app.use function has 4 arguments, Express understands this is error middleware
+
+			app.use(function(err, req, res, next) {})	<-- Express knows this is error handling middleware, and knows that err is the first important argument.
+
+			Known as Funciton Arity, equal to the length of the function (i.e. Function.length);
+
+		Remember... app.use is not the router itself, it's a middleware hook.
+
+	RESTful > Your API is structured in a standard way. There are many rules associated with it, not a protocol that's incredibly strict but it's useful for QA assurance.
+
+		/GET /nouns	--> 	all the nounts
+		/GET /nouns/:id--> 	gets this noun
+		/POST 	/nouns --> 	adds a noun to the db
+		/DELETE /nouns/:id -->	delets this noun
+		/PUT 	/nouns/:id --> 	update this noun
+
+		Useful to structure your routes in this fashion, for the sake of learning standard structure. Many APIs you use will follow this convention.
+
+	When it comes to Persistence between data and the front-end, you don't want to manipulate the front-end unless you're positive you've successfully affected the back-end first. This is to ensure synchronicity between the two.
+
+		Gabe removed the null arrays from newDay because the Model handels the creation of the day event.
+
+	Sample of a full AJAX function in jQuery...
+
+		$.post('/days/', newDay, function(day) {
+
+		}).fail(function () {
+			alert('failed to run the request');
+		})
+
+	Mongoose, two ways to create a document
+
+		var day = new Day... This runs a constructor, and then you need to Day.save() this, which is two steps
+		Day.create()
+
+	URL Encoded body is the same type usef for addresses in the browser. When a Post request comes into the Express server, it enters as a string, which is why you need body-parser to break up that string. Requiring that module does the grunt work of parsing out the Post for us.
+
+		Body Parser has two flavors, JSON, and URL Encoded
+
+			app.use(bodyParser.json());
+			app.use(bodyParser.urlencoded({ extended: false }));  <-- Google what extended means
+
+	Error handling in a Node function...
+
+		Day.create(req.body, function(err, day) {
+			if(err) return next(err); 		<-- This skips all other middleware and sends it straight to the Error Handling middleware. This is the De Facto way of having an error...
+			else {
+				res.json(day);
+			}
+		})
+
+		Get into the habit of doing error handling if Node returns an object either from Mongoose or from your own code.
+
+		next(argument)	<--	Bypasses middleware directly to Error Handling
+		next()		<-- Without an argument chains middleware
+
+	Returning a Database 
+
+		res.send(obj);	<--	Express is smart enough to convert, but this is more boilerplate and isn't as robust
+		res.json(obj);	<-- If you know you want to return JSON, use this, it has some extra features
+
+	Get RoboMongo
+	
+	Populating 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

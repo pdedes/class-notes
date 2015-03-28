@@ -53,5 +53,65 @@ ___________
 		Peeling apart the starting point code is the key to making it a dynamically accessible map
 
 		
+___________
+
+AJAX
+___________
+
+	It's just an HTTP request. Before AJAX was popularized, a client makes a request to the server, the browser would refresh and display a new page. Requests and redirects were the web before AJAX.
+
+	AJAX allows you to make those requests without rebuilding the page. It was first developed as XMR @ Microsoft which was XML based.
+
+	XML was a predecessor markup language to JSON. You had control over the tags/attributes. This has given way to JSON.
+
+	XHR requests were baked into IE, for the purpose of making online Outlook to have a destktop feel. XHR allowed JS to make server requests from the frontend.
+
+		var oReq = new XMLHttpRequest();
+		oReq.open('GET', url, true);
+		oReq.overrideMimeType("...")
+
+	This went unnoticed until jQuery made it much easier to use...
+
+		$.ajax({
+			type: "GET",
+			url: '/some/path/on/your/server',
+			data: {}
+		}).done(function(data) {
+			// ...action to take upon finish
+			$('body').append("<div>" + data + "</div>")
+		})
+
+	AJAX is usually limited to make calls back to the server hosting it. This is different from jQuery 'triggers'.
+
+	Security & AJAX...
+
+		This presents an opportunity for malicious code. A distributed denial of service attack could be launched using this code.
+
+		Browsers have blocks which query the site to check if the traffic is authorized. Can this foreign site make requests to you? Your site has to opt in to accepting distributed traffic. 
+
+			CORS was a solution to this: Cross-Origin Resource Sharing. You cannot make AJAX calls unless the receiving site has turned on AJAX listening from foreign sites.
+
+		The browser can differentiate between a user-initiated request from the URL bar and a scripted request.
+
+	JSONP, JSON with Padding
+
+		There's one way to get around CORS restrictions.
+
+		You can get the browser to make other types of request, via the <script> and <img> tags.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

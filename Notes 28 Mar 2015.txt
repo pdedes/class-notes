@@ -1,0 +1,131 @@
+_____________
+
+the ANGULAR
+_____________
+
+	The internet has progressed from documents to applications.
+
+	Serious software must be scalable, readable,  understandable.
+
+	Angular.JS
+
+		Is a library, but also a framework.
+
+			<html>
+				<head></head>
+				<body ng-app="appName">
+					<script src="angular.js"></script>
+					<script src="app.js"></script>
+				</body>
+			</html>
+
+		The heart of angular, is a really great templating engine, with a whole lot more.
+
+		IMPORTANT: Angular performs computations and renders without a backend or server.
+
+		Estalishes reusable patterns and architecture, allows product-specific code, and suggests solutions to platform's major problems.
+
+	The difference between a Library and a Framework
+
+		You use a Library's Functions	<-------->	You give a Framework your code to work with
+
+	When you try and build an application with cold JS, it gets unwieldy.
+
+	If our front-end is requesting data, using the methods we have up until now (backend swig), our front end is stuck with frozen snapshots of the data. The front-end is stuck with the code it's been given.
+
+	$scope refers to context in Angular. It's more about the HTML. In general you will be using $scope on the front-end JS files. In fact everything you do in Angular we be almost entirely on the front-end.
+
+	Angular also enhances our HTML to some extent.
+
+	Angular Controller
+
+		USER INTERFACE			-------->
+			Angular Template 	 $SCOPE		CONTROLLER
+			scope 				<--------
+
+		A way of tying a template to some JS Manager. $scope is just an object... think of it as a res.local() from SWIG.
+
+			app.controller('aController', function ($scope) {
+				$scope.someVar = 'wow';
+			});
+
+				NOTE: $scope is an Angular keyword, you can't replace it since you will break the framework. In order to work around this, you could 'explicitly' declare and then bind $scope as seen below. Technically this is the full version of the controller, as the above is a shorthand.
+
+				app.controller('aController', ['$scope', function (aNewVarName) {
+					aNewVarName.someVar = 'wow';
+				}]);
+
+				If you are using the shorthand version of the controller, this breaks a fundamental assumption in JS that you have control over the names of your function parameters. You have this control with the long-hand. 
+
+				In the long-hand version, the order of the parameters relative to the '$strings' is importnat. In the short-hand, order of multiple parameters is not important, only the names themselves are important.
+
+		Any '$$' is generally an internal Angular variable. You will generally work with '$' variables.
+
+	Egghead is a super resource for Angular.
+
+	User Interaction
+
+		A user clicks on an item at some point after the  page loads, now, Angular can recalculate the templete using...
+
+			$scope.$digest();	<---	This now updates the front-end HTML with the updated scope key/values
+
+			You actually won't need to necessarily use it directly, for example the $timeout parameter has $scope.$digest() built in for you.
+
+				app.controller('someController', function ($scope, $timeout) {
+					$scope.someVar = "WOW";
+					$timeout(function () {
+						$scope.someVar = "MOM";
+					}, 1000);
+				})
+
+			How does it update the HTML? The Attribute tag on the HTML <div> makes it target that part of the front-end. ng-controllers can be attached to <html>, not just <div>.
+
+		Each controller has it's own $scope.
+
+		A parent child relationship is determined by DOM nesting. A child controller inherits it's parent's $scope.
+
+		If a child's controller does not have a variable set that it's parent does, the child will inherit the parent's value of that variable via a prototype chain.
+
+	Angular Template Utilities (Directives)
+
+		Gives you smarter templates. You can declare functions similar to a jQuery event listener assignment.
+
+		ng-show=true/false	<-- Will hide/show based on the boolean
+		ng-click	<--	You can assign a $scope method here
+
+		These template utilities, working with the controllers, are smart enough to run $scope.$digest() for you.
+
+		When to use {{}} in the HTML and when not to? You use {{}} when you're working in non-Angular attributes or tags. When you're calling $scope in an Angular attribute, it's unnecessary.
+
+			ng-click="toggleBool(var)" will evaluate
+			onclick="{{ method }}" will need to be the syntax since it's a generic attribute.
+
+	Looping in Angular templates
+
+		ng-repeat
+
+	To get rid of 'Angular Flicker' you move the <script src> tag to the top of the <html> document.
+
+	Many jQuery scripts have been ported to Angular.
+
+	If you are using jQuery in an Angular Controller, it's a sign that you need to be using template utilities (directives).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
