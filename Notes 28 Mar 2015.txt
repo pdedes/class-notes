@@ -110,6 +110,129 @@ _____________
 
 	If you are using jQuery in an Angular Controller, it's a sign that you need to be using template utilities (directives).
 
+_______
+
+Workshop review: FLASHCARDS Angular #1
+_______
+
+	The difference between two lines is that... the first retrieves the flashCards module, the second sets it. A distinction which will become clear at a later time.
+
+		var app = angular.module('flashCards');
+		var app = angular.module('flashCards', []);
+
+	Get into the habit of splitting up controllers into different JS files.
+
+	Passing $scope into a controller is also referred to as injection
+
+	ng-repeat does create a new localized scope for each iteration.
+
+	If you wanted to desable the the flashcard after the person answered (i.e. they can't keep guessing), you can use the boolean in the ng-click method to prevent the action from taking place on the 2nd time.
+
+	When you run ng-repeat on a controller, the parent scope is not the next highest controller, it's a type of 'anonymous' controller over that ng-repeated element.
+
+	You can use a ternary operator on ng-class instead of passing the object (which is used to evaluate true/false anyway)
+
+		ng-class="flashcard.answeredCorrectly ? 'correct' : 'incorrect'"
+
+	Filters
+
+		They do not change the source object, they change and create a new "View" version of that data
+
+			{{ flashCard.question | uppercase }} will not uppercase the source object.
+
+		Order by: Trick to do reverse order, you add a '-' in front of the 
+
+			ng-repeat="flashcard in flashCards | orderBy:'-question'"
+
+	ng-init is problematic, it is not a place you expect to find 'state' ... more on this later
+
+_______
+
+Angular: PROVIDERS
+_______
+
+	Similar in abstraction to Models & Utilities
+	
+	There are four Providers
+		1. VALUE*
+		2. SERVICE
+		3. PROVIDER.PROVIDER
+		4. FACTORY*
+
+		* We'll be focusing on these
+
+	You can set data as an app that maintains a state across all elements of the application. For example, moving the flashcard data to an app.value assignment. You might want to declare these in the app.js file, and then inject these variables (using the exact var name) into your controllers. If they get very large you can declare them in their own file too.
+
+		app.value('flashCards' [
+			{obj},
+			{obj},
+			{obj}
+		])
+
+	This helps you avoid global value polution...
+
+	Modularity; Separation of Concerns 
+
+		The isolation of your code is critical to thinking through it's functionality, and your ability to reason through its logic.
+
+	In Angular, Providers are singlets, there are only ever one of each.
+
+	The difference between a value and a factory provider is that you can configure them with different angular parameters
+
+		app.factory('wahateverName', function ($http) {
+			$http.get('www.google.com/q?=pdedes').then(function (response) {
+				console.log(response);
+			});
+		});
+
+	Value providers expose their second argument
+	Factories expose what their factory function returns <-- Factories can have other tools injected as services which improve their functionality. The first function here contains an Angular dependency ($http), the second function is comparable to the first in a Value provider.
+
+	We want to use providers to...
+
+		1. Maintain DRY code
+		2. Abstract away implementation
+		3. Maintainable
+		4. Clarity
+		5. Testability
+
+	Injection looks up by name, not by pathname/location
+
+	When you declare a provider in Angular, it is registering it for use in the rest of the application. It will inject the provider, and cache it once it has run.
+
+	Factories can also inject in values from other factories
+
+		Favorite Restaurants ----> Restaurants
+
+	Remember, there is only one provider for each definition in memory.
+
+	Factories are a Better place to make http.get/AJAX requests than inside Controllers...
+
+		// Button, View changes can now go in here...
+
+		app.controller('HotelController', function ($scope, HotelModel) {
+			HotelModel(function (data) {
+				$scope.hotels = data;
+			});
+		});
+
+		// Any call for data, fetching/retrieving can be put in here...
+
+		app.factory('HotelModel', function ($http) {
+			return function (dataCallback) {
+				$http.get('/api/hotels').then(function (res) {
+					dataCallback(res.data);
+				});
+			};
+		});
+
+		If you see '.then' and it's asyncronous, it means their is a promise that will be returned when the first part executes.
+
+		The way to work with the data a promise resolves, is to add ANOTHER .then on the variable itself. '.then' does not resolve the promise it 'handles' the process, aka it's passing allong the promise and it's resolved data onwards.
+
+
+
+
 
 
 
