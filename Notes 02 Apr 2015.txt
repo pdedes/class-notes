@@ -1,0 +1,156 @@
+_________
+
+FLASHCARDS: Day 2 Review
+_________
+
+	Controller in Angular, is meant to just manage Scope. It shouldn't be handling server responsibilities.
+
+	Install JSON View in Chrome
+
+	Angular is server agnostic - it can work with a server written in any language, it's all about what it receives from the back-end
+
+	The return statement in an Angular factory, is what gets injected. It will always be the same value. Pay attention to the nuance here, every time it's injected it's a reference to same object, not copies of the factor.
+
+		$	Angular tool
+		$$	Angular internal, ignore
+
+	Dependency Injection, is the process of passing in an established environment/framework/tool into the Angular controller/factory, etc. An example is a factory, or $http
+
+	A promise returns an object, which has a property '.then' which allows you to work with the returned asynchronous function call.
+
+		The function you give '.then', will eventually work on the data that is received via the promise.
+
+		Our AJAX response gives us a lot of metadata on the call, such as the response information, protocol, etc. We are interested in the data property on the AJAX returned object. Keep in mind that the response object is in a different layout than what we may expect, you can see this with a console.log(response).
+
+		Joe handles this upstream by dialing into response.data in the Factory.
+
+	We want to manage our Complexity with these Controllers and Factories. The factory helps abstract away 'where' those flashcards came from, and makes the Controller code much cleaner.
+
+	You can't send a request body with a GET request, thus the need for query... req.query
+
+		http://localhost:1337/cards?category=Angular	
+
+		The key/value pair after the /cards route, is being stored in the req.query variable in Express
+
+		It's the recommended way to send data WITH a GET request
+
+		Building the AJAX request using $http tools, configObj = { params: {category: categoryName}}.. This is passed to the AJAX request to help you build a multi-layered query to the server. configObj is concatenated with the url route and sent to the server. 
+
+	When ng-repeat runs, it creates a new scope during every iteration. So for the example of the categories, the element is a property on the iterative scope. NG-REPEAT is attaching new values to each iteration.
+
+	NG-INSPECTOR; allows you to see all of the different scopes in the application.
+
+	REMEMBER: Controller is meant to manage view, scopes... Factory is dealing with data interface and those details.
+
+		Data flow of the Application
+
+			1.	Flashcards are in the Database as Mongo Docs
+			2.	Express server has a get route to pull the cards via a Mongoose Model and Query
+			3.	Express returns the query results via res.send()
+			4.	Angular Factory hits this Express GET route via an AJAX call
+			5.	The factory is Injected, and the controller calls the .getFlashCards() method in the factory, which brings us back to step 1.
+
+	Your server is in Norway. Expect the latency and problems that will come with that. Respect that Angular and Node are separate in their purpose, and even though they're both JS, they only communicate with one another through HTTP.
+
+	When you inject a factory, you're not injecting a copy. You are setting up another reference to a singularly available object.
+		When you change a Factory Object in one place, you will have changed it everywhere in the application.
+
+	If you have injected to many thing into a single place, it's a sign you need to modularize further
+
+	For the active button way, use a switch in the controller along with a helper function to check the clicked category against the currently set category, and then use ng-class to set the active css attribute.
+
+
+_________
+
+Angular Directives
+_________
+
+	"The best part of Angular"
+
+	Four major problems with Browsers as a Platform
+		1.	DOM Management
+		2.	Modularity
+		3.	Page Management, without refreshing
+		4.	Server/Client Synchronization
+
+	Directives address numbers 1 && 2
+
+	The "Component" is the modern paradigm of web applications...
+
+	We register directives to an app by writing...
+
+		app.directive('statusUpdate', function () {})	<-- This is an injectable function
+
+	A directive is similar to a Factory, what defines it, is what the function returns
+
+		app.directive('statusUpdate', function () {
+			return {									<-- Directive Definition Object
+				restrict: 'E'							<-- Classifies this as an 'Element' directive
+				template: '<h1>I'm hungry</h1>'			<-- This is what it is evaluated to
+			};
+		});
+
+		We can then use the directive as a 'custom' HTML tag
+
+			<body>
+				<hello></hello>
+			</body>
+
+	Directives are defined using camelCase in your Angular code, but in HTML, they should be hyphenated
+
+		app.directive('helloThere', function () {})		-->		<hello-there></hello-there>
+
+	If your template is repeated in a lot of different places, directives can help you centralize this problem so you only have to update it in one place.
+
+	Instead of passing an HTML string to the directive, you can abstract out the HTML to another file, and use templateURL instead of template in the object.
+
+		app.directive('statusUpdate', function () {
+			return {									
+				restrict: 'E'							
+				templateUrl: 'directives/song.html'		<-- Notice a new key is used here when referencing a file
+			};
+		});
+
+		An AJAX request is made here when this directive is called, you can see it in the NETWORK console tab.
+
+	NOTE: if you see {{ }} in the rendered HTML, there's a chance Angular has crashed, because when {{ }} elements are evaluated to undefined, angular will replace that with "ng-binding" by default. 
+
+	The modularity here allows teams of Designers to work with Engineers in parallel
+
+	There are also ATTRIBUTE Directives, Behavior based.
+
+		app.directive('statusUpdate', function () {
+			return {									
+				restrict: 'A'								<-- Notice a new Code Letter (Attribute)					
+				link: function (scope, element, attrs) {}	<-- Called when the scope and corresponding element are linked or combined... And ALWAYS in the same order
+			};
+		});
+
+		S 	Scope of the Element you are attached to
+		E 	jQuery type object (jQLite, which contains about 1/3 the functions)
+		A 	Object representing all of the other attributes that are on this element
+
+	Directives always return a Directive Definiton Object, DDO.
+
+		The linking function is called when it's linked to an element
+
+
+	FYI: you can cancel out a setTimeout function with .clearTimeout
+
+		timeout = setTimeout(function () {})
+
+		clearTimeout(timeout);			<-- if the timeout hasn't fired, cancels it.
+
+	FYI: To open something up in a new tab...
+
+		<a target="_blank" href="...">	<--	The 'target' attribute is what opens a new tab
+
+
+
+	In Summary:
+
+		Components	-->	Elements
+		Behaviors	-->	Attributes
+
+
+
