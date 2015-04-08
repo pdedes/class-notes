@@ -1,0 +1,221 @@
+___________
+
+Flashcards Day 4 Review: Forms & Validation
+___________
+
+	What is body parser exactly?
+
+		PUT & POST requests, there are bodies that accompany the request. The format is a string with delimeters. The server needs to have the capability to break the body into it's components. Body parser will append the broken parts 
+
+		req.BODY DOES NOT EXIST without Body Parser Middleware.
+
+		NG-MODEL is smart enough to create an object even if it hasn't been declared in the scope.
+
+		The body is passed along the HTTP header as a JSON string as a "Request Payload" which you can inspect in Chrome Dev Tools --> Headers. This is the object that body-parser will intercept and parse. The first line of the parser is reading the 'content-type' which is set to JSON.
+
+		You can't include a Payload with a GET request.
+
+	Observing your form data as you build and debug...
+		Use the <pre></pre> tag to observe the object you're building. It will preserve line breaks so it's helpful to view your form values as you build it.
+
+		There is an angular filter called 'json' that will pretty-print the object. In order to work it must be within the <pre> tag.
+
+			<pre>
+				{{ myObj | json }}
+			</pre>
+
+	Using ng-model, if you only instantiate a blank object, and don't give it a frame, NG-MODEL may interpolate the form inputs unintentionally. For example, by calling...
+
+		card.answers[0].text
+
+	...The object that is built by the form will have a '0' as the value where answers was supposed to be. To get around this, define a structure for your form and don't let Angular make assumptions about how to build it.
+
+		$scope.formObj = {
+		  question: null,
+		  category: null,
+		  answers: [				<--	This solves that problem
+		    {correct: false}, 
+		    {correct: false}, 
+		    {correct: false}
+		  ]
+		}; 
+
+	NG-SUBMIT is superior to NG-CLICK for passing a form.
+
+		NG-SUBMIT allows us to have access to certain data, such as $submitted data, similar to a $valid variable which is available on the form name.
+
+		NG-SUBMIT is also more narrow in it's definition for long forms
+
+		For submission, all you need is a <button> and the type='submit' is actually extemporaneous
+
+	Form Validations
+
+		1.	Insert novalidate in the <form> tag to turn off default html validation
+		2.	Insert required tag on the fields that must be submitted
+		3.	Add a form name, or else the Controller does not get attached on the scope
+			a.	If you console.log or <pre> this JSON object, you can see all of the form details available to you, $valid, $pristine, %dirty
+		4.	
+
+		$pristine & $dirty highlight whether the form field is different from it's initial state
+
+		$untouched & $touched highlights whether or not the user has interacted at any point in the field.
+
+		If we want to analyze the characteristics of a form or an input, we can do this by seeing the properties set on the form or inputs 'name' attribute. but realize that the 'name' attribute acts differently at the form and input levels.
+
+			<form name="formName">
+				<input name="inputName">Question: </inpu>
+			</form>
+
+		Note: If you do not shut of the HTML5 default field validations, the browser will shut off your javascript. Turn it off! If you don't it will disrupt your submission for every being registered.
+
+			Add 'novalidate' to your form tag.
+
+			<form ng-controller="FlashFormController" name="FlashForm" novalidate ng-submit="" ng-minlength="10">
+
+
+___________
+
+UI Routing
+___________	
+
+	Again, the problems of Building applications in the browser
+		1. Modularity
+		2. DOM Manipulation
+		3. Page Management
+		4. Server and Client Synchronization
+
+	In the classical model, Get/Serving is a cycle of .html page retrieval from the server storage. This entails a...
+		1. complete refresh
+		2. stylesheet retrieval
+		3. Re-rendering
+
+	Single Page Application (SPA)
+
+		When a user clicks on a link...
+
+			1.	An AJAX request is triggered to a specific path
+			2.	The logic will instruct the DOM to refresh the part that is designated to be changed
+
+		AJAX plays a big role here. Think of the SWIG paradigm here. There is no refresh, just a DOM section replacement.
+
+		The browser also incorporates this into the Back and Forward buttons, so that they will redo the last operation in reverse (and also updates the URL as well).
+
+	SPAs can be built in Angular using UI Routing.
+
+		It's a third-party tool; meant to handle views in a SPA. Allows for easy navigation between different parts of the application.
+
+		Handles nested views.
+
+	Bower package retrieval
+
+		bower install angular --save
+		bower install angular-ui-router --save
+
+		Make sure you include your ui-router source file after the angular source file.
+
+	If you run 'http-server' in the terminal, it'll create a server from the root of the directory that you're in.
+		Make sure you sudo npm install http-server -g 
+
+		It will default to :8080 port
+
+	Dependency Injection; Merging different modules into one.
+
+		var app = angular.module('PuppyStore', []);		The [] is a holding place for dependencies.
+
+		If we have declared other angular.modules, that includes controllers/factories/directives etc., they will be accessible once we inject those modules in here.
+
+		var app = angular.module('PuppyStore', ['ui.router']);
+
+	Module Configuration; This is a step before the application is booted.
+
+		app.config(function ($stateProvider) {})
+
+		In the $stateProvider, we can register application states. A state is ALWAYS a set of three things, a URL, a Template, and a Controller
+
+			app.config(function ($stateProvider) {
+				%stateProvider.state('home', {
+					url: '/home',
+					template: '<h1>Hello, Welcome Home!</h1>',
+					controller: 'PuppyController'
+				})
+			});
+
+			app.config(function ($stateProvider) {
+				%stateProvider.state('list', {
+					url: '/list',
+					templateUrl: 'templates/list.html',
+					controller: 'PuppyListController'
+				})
+			});
+
+		Note, you can replace the template key/value pair with templateUrl: 'file.html'
+
+	UI Router should stop you from thinking of the application as full of pages, but rather, having multiple states.
+
+	Now that we've declared our different states, how do we access these states? the answer is ui-sref attribute
+
+	UI-SREF
+		Is a state equivalent for HREF. This helps us navigate through our application, as well as setting up the browser front and back buttons to work properly. It will place the rendered state into the <ui-view> directive.
+
+		<nav>
+			<ul>
+				<li ui-sref="home">Home</li>
+				<li ui-sref="list">List</li>
+			</ul>
+		</nav>
+		<ui-view></ui-view>
+
+		This also allows bookmarks to be set on specific URLs, which will trigger the correct state to be shown.
+
+	Nested States
+
+		Placing a nested <ui-view> within one of the states. So that we have one at the index level, and now at one of the rendered state templates. We then need to update our state configuration
+
+			app.config(function ($stateProvider) {
+				%stateProvider.state('list.puppy', {		<-- Notice the dot notation here
+					url: '/puppy',
+					templateUrl: 'templates/puppy.html',
+					controller: 'PuppyController'
+				})
+			});
+
+		This list.puppy state is a child of the list state. 
+
+		Going to this new state, will bring you to .../list/puppy in the URL
+
+	State Parameters
+
+		What if we want to do something more specific. Thinkg about req.params access in express.
+
+			app.config(function ($stateProvider) {
+				%stateProvider.state('list.puppy', {		
+					url: '/puppy/:puppyName',				<-- Notice how we retrive the variable here
+					templateUrl: 'templates/puppy.html',
+					controller: 'PuppyController'
+				})
+			});
+
+			That variable can be retrieved via $stateParams which is injected to the controller.
+
+			app.controller('PuppyController', function ($scope, $stateParams) {});
+
+			<li ui-sref="list.puppy({ puppyName: puppy})" ng-repeat="puppy in puppies">
+
+	You can only have one state activated at any time. UI-ROUTER>'Named Views' is what you need to study if you want to have multiple sections of the page update independently of one another.
+
+	Note, ui-view can be attached as an attribute to a <div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

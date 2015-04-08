@@ -1,0 +1,118 @@
+_________
+
+FLASHCARDS: Day 3 Review
+_________
+
+	The less logic in your template the better. Leave it to your controller and directives to do the heavy lifting.
+
+	In general, directives are usually stored in one folder, since they're associated with multiple things. Called 'Fractal' Design for folder/organization layout. The size and layout of your application will dictate this.
+
+	Directives return a Directive Definition Object (DDO).
+
+		return {
+			restrict: 'E'		<--	(could be 'A', or even 'EA')
+		}
+
+	Task Runners will do the work of loading all of your JavaScript in one shot, minified and deploy it to your front-end. Examples are:
+		Grunt
+		Gulp
+
+	Short-circuiting of Logical Operators, or the DEFAULT Operator
+		$scope.chosenCategory = category || 'All';
+
+		logical operators = category & category.name;  If the first element is true, it will continue on and return the second element.
+
+	ViewModel is the data that the view is using, think of this as the ng-show/ng-hide elements.
+
+	For the Loader, another way to build the loader 'show' logic, is to use the state of the application data to determine the ViewModel. You could empty the card array and hide the flashcards if the array is null (falsey).
+
+	Think about building COMPONENTS, not Pages. For example, the flashcards would need to be maintained in two different places if we wanted to reuse them. Instead, we abstract it out to it's own directive to make it easily maintainable.
+
+	A link function is a func that describes how the evironment around the directive, influences the directive.
+		It's a vanilla JS, but the order of the parameters matters. Scope is not the angular $scope service - it's a parameter which and Angular $scope is passed into as a 'bucket'.
+
+		In the context of this workshop, the ng-repeat of the flashcard, is the scope that we're working with.
+
+		You can also define dynamic JS behavior in the link function. In this workshop we simply re-use the FlashCard Controller
+
+		You can inject Factories into the directive, making them available to the directive code within.
+
+	The Directive 'templateUrl' key is RELAVTIVE to the public folder. The Angular app will make an AJAX call from the front-end into the back-end, and it can use the static file handler by using this relative view.
+
+	-->	Isolate-Scope
+			Cutting the remaining environment dependencies
+
+			The directive as it is at the start, can become brittle since it has access to several scopes and parent scopes. The idea here is to 'isolate' the directive, and only pass in the minimum amount of data to it, as needed.
+
+			Scope Definition Object
+
+				scope: {
+					card: '='		<-- Says use the attribute on the index that matches 'card'. Beware that camel & hyphen case is in effect here
+				}
+
+			The isolate scope attribute, once set-up, becomes the only gateway for passing data into the 
+			Directive.
+
+	jQLite
+
+	Error-Handling
+
+		What happens if we can't retrieve cards? The user may wait there for a long time.
+
+		You always want to handle ERRORS in your Promise chain. The flashcard retrieval code we have is BAD code since it does not handle any errors which bubble through the chain.
+
+			FlashCardsFactory.getFlashCards(category).then(function (cards) {
+	            $scope.loader = true;
+	            $scope.flashCards = cards;
+	        }).catch(function (err) {
+	        	$scope.error = err;			<--	At the very least we can use this flag to display to the user what the problem is.
+	        });
+
+
+	        <loader ng-hide= "flashcards || error"></loader>	<-- We can then utilize the error with OR logic to hide the loader
+
+	Philosophically: It's considered well-written code when your application state relies on your actual app and it's data, instead of intermediate flags that you need to manage.
+
+_________
+
+Angular Forms
+_________
+
+	ng-model, a Directive which will be placed all over our Form. It can be placed on many different fields and has many different 
+
+		It will store it as a scope-object on whatever you pass it to.
+
+			<html type="text" ng-model="creditCardType"><html>	<-- anything you input will be available at $scope.creditCardType
+
+	Validations are built-in to Angular
+
+		E-mail matching
+		Regex matching
+
+	Giving a form a name, creates an all encompassing controller for that form.
+
+	ng-model also keeps track of whether fields are pristine or whether they've been touched aka 'dirty'
+
+		<form name="formtest" ng-submit="cardform.$valid submit(cformObj)">
+
+	When handling payments, you will most likely use an open-source payments platform. You won't want to write your own due to the multiple layers of security that need to be considered.
+
+	Error Handling...Useful to return a representation of the posted request to the front-end.
+
+	When building a post request, you need to send a body-object to the post request...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
