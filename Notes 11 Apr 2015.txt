@@ -3,4 +3,147 @@ ______________
 UI Router Workshop Review
 ______________
 
+	Routing and URL structure is almost as important as what is on your page. Many apps have a complex process flow. 
+		For example: if an app has a wizard that guides you through sign-up steps.
+
+	URL Routing will help you wire up these pathways, as well as take advantage of browser functionality such as the back-button.
+
+	UI-ROUTER is a third party tool that has more features than Angular's stock ngRoute
+
+	When we bower install ui-router, you have two choices, either move the compnent you've installed into the public folder, OR, add a new static route to allow the index.html to access the compenents...
+
+		...in Express app.js...
+			var bowerComponentsPath = path.join(__dirname, "../bower_compoents");
+			app.use(express.static(bowerComponentsPath)); 	<-- the URL path will NOT contain '/bower_components'
+
+	URLs are not only static folder structures, today they are 'routes' that serve up resources based on the address.
+
+	A new provider of dependency injectables: We can inject new features into our Angular app using the dependency brackets.
+
+		var app = angular.modeul('flashcards', ['ui.router']);
+
+		app.config(function($stateProvider) {
+
+			$stateProvider
+				.state('main', {
+
+				})
+
+				.state('add', {
+					url: "/add",
+					templateUrl: "templates/add-form.html",
+					controller: "NewCardController"
+				})
+
+		});
+
+	Note: Use the full version of libraries, and not the minified version. If you want minified code, you can run it through a process later on.
+
+	The browser's first source of truth, is the server, so when the browser first asks for the /add route, we get an error from the backend stating:
+		"Cannote GET /add"
+
+	<a ui-sref>
+
+		Is a tool that helps maintain browser functionality when we build URLs off of our links.
+
+		ui-sref-active="activeTab" is an attribute that's available. Note: When a child state is 'active', all of its parent states are 'active'. 
+
+		ui-sref also accepts parameter values from the URL.
+
+			<button
+				ui-sref="main.category({ category: category })"
+			>
+
+			Note: if your route requires these parameters, you pass them in as is, if not, they will become query parameters appended to the end.
+
+	Angular has a template cache cycle.
+
+		In production, a template cache is built, in development mode, we are always pinging the backend for the latest file. So in production mode, the first thing Angular will do, is check whether there is an available template cache, if not, it will hit the server.
+
+
+	ui-router 'RESOLVE' helps keep the controller much cleaner:
+
+		"You can use resolve to provide your controller with content or data that is custom to the state. resolve is an optional map of dependencies which should be injected into the controller." .. From the ui-router documentation
+
+		resolve: {
+			cards: function(FlashCardsFactoy) {
+
+			}
+		}
+
+	state.go() is the controller equivalent of ng-click
+
+	HTML5 Mode, you need to change the '/' route in the server. since the #/ anchor changes in the front end. 
+
+		app.get('/*') will now push all requests to the main index.html page, load that to the front, and allow the front-end to handle all of the routing.
+
+
+______________
+
+Senior Phase
+______________
+
+	Move deeper, not laterally.
+
+	On the Wow S-Curve:
+		Rapid Prototype
+		Productization		<-- Be careful getting stuck here. Mostly invisible work here so ask for help.	
+		Traction/Usage
+
+	Esprima: Engine tree structure
+		--> Code syntax and code highlighters work with code this way
+		--> This would be an ambitious project
+
+	Don't make your risk the ecosystem, make it the idea/code
+
+	Building a company-based project is a good way in
+
+	producthunt.com
+
+	convolutional neuro-networks (AI)
+
+______________
+
+Promises
+______________
+
 	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
