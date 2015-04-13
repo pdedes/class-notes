@@ -107,16 +107,111 @@ ______________
 Promises
 ______________
 
-	
+	A promise is an Object. "The eventual result of an asynchronous action."
 
+	As such, you can pass it, collect it in arrays, you can test it.
 
+	But the key part, is a function method '.then'. An async process will report back in and report a value to it. It's a way to attach callbacks in a portable way, since it can be moved around and manipulated much easier.
 
+	Our previous async programming has been "Continuation-passing" style. The async process will exit the client-side JS thread, and it will be handled outside, and it will be returned into the callback we have established.
 
+			models.Page.findOne().exec(function () {})
 
+	In Promises, we would represent this as...
 
+			models.Page.findOne( {}).exec().then().
 
+	This works because the exec function returns a promise. What is point of this?
 
+	Our callbacks are no longer tied to our asynchronous function - they can be broken apart and split up. The start and handling of the async function are completely glued together.
 
+		var promise = models.Page.findOne( {}).exec();
+
+		promise.then(
+			function (page) {}
+			function (err) {}
+		)
+
+	The promise is like a bag, that is collecting many different callbacks, that will be executed when they are ready to go.
+
+	You don't need to know when the promise is going to be resolved; it's time ambivalent.
+
+	Mongoose has a promise library called M-Promise built into it.
+
+	You can even use promises to export via a module
+
+		module.exports = userNameObj;
+
+	Q.all() works by attaching new behavior to a promise. It says 'for every promise in an array', when it resolves run a promise. Q says "tell me when you're all ready". This is extremely performant > not listening > the things you're waiting on come to you when they've all arrived.
+
+	.THEN is the public and principal way you interact with a promise. IT's how you transform a promise into a new promise via chaining.
+
+		the following are available via closure
+		state: 	pending,	fulfilled, or rejected
+		information:	value, or reason
+
+		Promises only represent one async operation; once it's been settled, you can't change it's state afterwards
+
+	Format:
+
+		aPromise.then( successHandler, failureHandler );
+
+		If you don't have the right handler, an error will keep propagating down the chain until it finally finds a failure handler somewhwere.
+
+	Get into the habit of thinking of async as encapsultating one resulting value one time.
+
+	"Domenic Denicola"
+
+		Async Promises is to help us write our code to look and handle more synchronously, avoid Callback Hell.
+
+	Error handling has DRY enforcement with Promises, since you only have to stick .catch(function (err) {}) at the end to catch any errors. Using the absence of a failure handler, allows you to propagate promises to the end of the chain.
+
+		The point of an error handler that exists in the middle of the chaing, is to handle the situation and return us to successful chain operation
+
+	There's no 'canonical' Promise in the JS world. They are a data structure that are implemented differently across libraries.
+
+	A+ are the leading standard.
+
+		Warning: jQuery $.Deferred is not a standard, so try avoiding it.
+
+	These libraries wrap async calls in promise-makers
+		Q
+		Bluebird
+
+	Promisification helps rebuild old async style into promise style.
+
+		Bluebird.promisifyAll(fs);
+		fs.readFileAsync('file.j', 'utf8').then(...)
+
+	A deferral is a parent or manager of a promise, it's responsible for one promise. It hangs out with the async function, when the callback happens, it will be the manager of the return of the callback.
+
+		It's important to separate that the 
+
+		Each deferral births one promise. The deferral is the MIDDLEMAN between old style async callbacks and a promise. It takes the callback return, and if it's an error, it runs it to the promise via myDeferral.reject(err) and if it's OK, it runs it to the promise via myDeferral.resolve(data);
+
+		The promise comes from an object that is created from the deferral code.
+
+		Here's a modern implementation of Promise Building...
+
+			var myPromise = new Promise ( function (resolve, reject) {			<-- The promise is built synchronously and .then is available right away
+				someAsyncCall( function (err, data) {	
+					if(err) reject(err);										<-- resolve and reject are async
+					else resolve(data);
+				})
+			})
+		
+			myPromise.then( someSuccessHandler, someErrorHandler );
+
+			Where do Resolve and Reject come from? They come from the Promise or Deferral Library...
+
+	Main Takeaway:
+		The promise represenets the value of the async, and we can attach behavior to it via '.then'
+
+		Promise B = PromiseA.then( [successHandler], [failureHandler]);
+
+		.catch(handleErr) is equivalent to .then(null, handleErr);
+
+	The best thing about callbacks, is that you can return something from your call. From an async value 
 
 
 
