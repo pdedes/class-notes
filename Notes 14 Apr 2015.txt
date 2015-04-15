@@ -1,0 +1,54 @@
+__________
+
+Pledge.JS, or, Making our own Promise Library
+__________
+
+	Chapter 1
+
+		How do you get the value of, or use a Promise?  ---->  .THEN  <----
+
+		Structure & State; typical OOO building
+
+		The deferral will 'hang out' with your asynchronous code, and allow your program to 'manage' and 'interact' with the ethereal 'Promise'
+
+	Chapter 2...
+
+		Take care to improve the readability of your code. Outsource mundane things like prototype object building to external functions. For example, when building the handlerGroup objects, just create a new constructor function so that your .then code is much easier to read. As you start to build out .then, you can place logic related to building that object in it's own bin.
+
+		Spy functions help you more carefully test functions, e.g. 'has it been called?', 'how many times has it been called?'
+
+		When we receive callbacks and the promise hasn't resolved yet, we want to capture the callback and hold on to it for the eventual resolution of that promise.
+
+		When considerting your if/else control statements in functions, consider using an early empty 'return' to end a function if a certain parameter has not been met, you can make your code and
+
+		WARNING: Anytime you see a 'this' inside our function, beware of loss of lexical scoping, either use the 'that = this', but the more elegant and functional way is to add .bind at the end of a function
+
+			THINK: Context and "This" are almost synonyms
+
+			this.handlerGroups.forEach(function(handlerObj) {
+				if(!handlerObj.successExecuted) {
+					handlerObj.successCb(this.value);
+					handlerObj.successExecuted = true;
+				}
+			}.bind(this));
+
+		Accounting of the callbacks and their run status, here are some options:
+
+			1.	Add flags to the handlerGroups 	(you used this but it's more to keep track of)
+			2.	Wipe out the handlerGroup array once functions have been executed
+			3.	Queue: Use a while loop on the handlerGroup array's length, and shift from the array once the function is executed.
+				a. This ensures the function never runs again
+				b. This ensures functions run in the same order
+				c. It's less about iterating, and more about data structures
+
+		Well-coded promise library are as deterministic as possible, i.e. you have a certain expectation 
+
+
+
+
+
+
+
+
+
+

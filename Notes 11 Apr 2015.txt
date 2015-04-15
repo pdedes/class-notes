@@ -214,7 +214,7 @@ ______________
 	The best thing about callbacks, is that you can return something from your call. From an async value 
 
 
-
+	A Rejection Handler's job, is to transform a failure into a success. In otherwords, it wants to return your program to a normal operating state. One error doesn't have to derail your entire chain.
 
 
 
